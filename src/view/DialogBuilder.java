@@ -1,6 +1,7 @@
 package view;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 
 /**
@@ -27,8 +28,41 @@ public class DialogBuilder {
     }
 
     public String keyDialog() {
-        return JOptionPane.showInputDialog(af,"Enter encryption/decryption KEY",
-                "Enter KEY", JOptionPane.PLAIN_MESSAGE);
+        return hiddenInputDialog("Enter KEY", "Enter encryption/decryption KEY");
+    }
+
+    @Deprecated
+    public String visibleInputDialog(String title, String message) {
+        return JOptionPane.showInputDialog(af,message,
+                title, JOptionPane.PLAIN_MESSAGE);
+    }
+
+    public String hiddenInputDialog(String title, String message) {
+        JPanel panel = new JPanel();
+        JLabel label = new JLabel(message);
+        final JPasswordField pass = new JPasswordField();
+        panel.setLayout(new GridLayout(2,1));
+        panel.add(label);
+        panel.add(pass);
+
+        // Use the customized JPanel panel
+        JOptionPane pane = new JOptionPane(panel, JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION) {
+            @Override // Sets focus to the input field when the dialog displays
+            public void selectInitialValue() {
+                pass.requestFocusInWindow();
+            }
+        };
+
+        pane.createDialog(af, title).setVisible(true);
+        int selected = Integer.parseInt(pane.getValue().toString());
+
+        if (selected == JOptionPane.OK_OPTION) {
+            return new String(pass.getPassword());
+        }
+        else if (selected == JOptionPane.CANCEL_OPTION) {
+            return null;
+        }
+        return null;
     }
 
     public String highlightDialog() {
