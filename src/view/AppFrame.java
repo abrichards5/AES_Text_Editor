@@ -68,9 +68,17 @@ public class AppFrame extends JFrame {
     public StatusBar statusBar() {
         return statusBar;
     }
-    public MenuBar menuBar() {
-        return menu;
+
+    public void setBinaryMode() {
+        textArea.setText(" --- Binary file detected: Editing disabled ---");
+        textArea.setEditable(false);
+        textArea.setBackground(Color.LIGHT_GRAY);
     }
+    public void setTextMode() {
+        textArea.setEditable(true);
+        textArea.setBackground(Color.WHITE);
+    }
+
 
 
 

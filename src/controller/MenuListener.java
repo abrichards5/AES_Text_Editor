@@ -68,9 +68,6 @@ public class MenuListener implements ActionListener, DocumentListener, WindowLis
             case "wordwrap":
                 model.switchWordWrap();
                 break;
-            case "switchcrypto":
-                model.switchCrypto();
-                break;
         }
     }
 

@@ -33,6 +33,7 @@ public class CBCCryptographer implements Cryptographer{
     public CBCCryptographer() {
         try {
             cipher = Cipher.getInstance(CIPHER_ALGORITHM);
+            System.out.println("Using: "+CIPHER_ALGORITHM+", with hash: "+HASH_ALGORITHM);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -55,15 +56,19 @@ public class CBCCryptographer implements Cryptographer{
         return null;
     }
 
+    public String getMode() {
+        return CIPHER_ALGORITHM;
+    }
+
     @Override
-    public String encrypt(String key, String data) {
+    public byte[] encrypt(byte[] key, byte[] data) {
         try {
-            SecretKey secretKey = generateSecretKey(key);
+            SecretKey secretKey = generateSecretKey(new String(key));
             cipher.init(Cipher.ENCRYPT_MODE, secretKey);
             byte[] iv = cipher.getParameters().getParameterSpec(IvParameterSpec.class).getIV();
 
             //encrypt data
-            byte[] encrypted = cipher.doFinal(data.getBytes());
+            byte[] encrypted = cipher.doFinal(data);
 
             //put iv in start of new array
             byte[] cipherText = new byte[encrypted.length + iv.length];
@@ -73,7 +78,7 @@ public class CBCCryptographer implements Cryptographer{
             System.arraycopy(encrypted, 0, cipherText, iv.length, encrypted.length);
 
             //Encode to B64
-            return Base64.encode(cipherText);
+            return cipherText;
         }
         catch (InvalidParameterSpecException e) {
             System.err.println("CBCCryptographer.encrypt() InvalidAlgorithmParameterException: "+e.getMessage());
@@ -96,12 +101,12 @@ public class CBCCryptographer implements Cryptographer{
     }
 
     @Override
-    public String decrypt(String key, String data) throws Base64DecodingException, BadPaddingException, IllegalBlockSizeException{
+    public byte[] decrypt(byte[] key, byte[] data) throws Base64DecodingException, BadPaddingException, IllegalBlockSizeException{
         try {
-            SecretKey secretKey = generateSecretKey(key);
+            SecretKey secretKey = generateSecretKey(new String(key));
 
             //Decode from 64
-            byte[] encrypt = Base64.decode(data);
+            byte[] encrypt = data;
 
             //pull out the iv from the encrypted data
             byte[] iv = new byte[IV_LENGTH];
@@ -115,7 +120,7 @@ public class CBCCryptographer implements Cryptographer{
             System.arraycopy(encrypt, IV_LENGTH, ciphertext, 0, ciphertext.length);
 
             //Decrypt
-            return new String(cipher.doFinal(ciphertext));
+            return cipher.doFinal(ciphertext);
 
         }
         catch (InvalidAlgorithmParameterException e) {

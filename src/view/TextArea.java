@@ -54,12 +54,6 @@ public class TextArea extends JTextArea {
     public boolean getTextWrap() {
         return this.getLineWrap();
     }
-    public String getText() {
-        return super.getText();
-    }
-    public void setText(String s) {
-        super.setText(s);
-    }
     public void removeHighlight() {
         getHighlighter().removeAllHighlights();
     }

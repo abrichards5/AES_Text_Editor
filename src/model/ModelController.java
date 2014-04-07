@@ -19,6 +19,9 @@ public class ModelController {
 
     private Cryptographer aes;
     private AppFrame view;
+    private ByteData data = new ByteData();
+    private FileMode mode = FileMode.TEXT;
+    private final long MAX_SIZE =  50000000L; //50mb
 
     public ModelController(AppFrame af, Cryptographer aes) {
         view = af;
@@ -27,71 +30,48 @@ public class ModelController {
     }
 
     private String getCurrentCryptoMode() {
-        if(aes.getClass().equals(ECBCryptographer.class)) {
-            return Cryptographer.ECB;
-        }
-        else if(aes.getClass().equals(CBCCryptographer.class)) {
-            return Cryptographer.CBC;
-        }
-        return null;
+        return aes.getMode();
     }
 
     private void cryptoUpdateGUI() {
         String curMode = getCurrentCryptoMode();
-        if(curMode.equals(Cryptographer.CBC)) {
-            view.statusBar().setMode(Cryptographer.CBC);
-            view.menuBar().setSwitchCryptoText("Switch to "+Cryptographer.ECB);
-        }
-        else if (curMode.equals(Cryptographer.ECB)) {
-            view.statusBar().setMode(Cryptographer.ECB);
-            view.menuBar().setSwitchCryptoText("Switch to " + Cryptographer.CBC);
-        }
-    }
-
-    public void switchCrypto() {
-        String curMode = getCurrentCryptoMode();
-        if(curMode.equals(Cryptographer.CBC)) {
-            aes = new ECBCryptographer();
-        }
-        else if (curMode.equals(Cryptographer.ECB)) {
-            aes = new CBCCryptographer();
-        }
-        cryptoUpdateGUI();
+        view.statusBar().setMode(curMode);
     }
 
     public void newFile() {
+        mode = FileMode.TEXT;
+        view.setTextMode();
         view.getTextArea().setText("");
         view.statusBar().setFilename("");
         view.setTitle("");
     }
 
-    // Checks to see if the file is open able as text
-    private boolean checkFile(String data) {
-        final long MAX_SIZE = 15000000L;
-        char[] chars = data.toCharArray();
-        long length = chars.length;
+    // Loads the file and checks what type it is
+    private FileCheck loadFile(File file) throws IOException {
+        long length = file.length();
         // Check size
         if(length > MAX_SIZE) {
-            return false;
+            return FileCheck.LARGE_FILE;
         }
-        // Check valid text
-        for (char c : chars) {
+
+        FileInputStream fis = new FileInputStream(file);
+        byte[] dataIn = new byte[(int)file.length()];
+        fis.read(dataIn, 0, dataIn.length);
+        data.set(dataIn);
+        fis.close();
+
+        for (byte c : dataIn) {
             if(c <= 0){
-                return false;
+                return FileCheck.BINARY_FILE;
             }
         }
-        return true;
+        return FileCheck.TEXT_FILE;
     }
 
     public void openFile(File file) {
-        String dataString;
+        FileCheck fcIn;
         try {
-            //Read file into a single string
-            FileInputStream fis = new FileInputStream(file);
-            byte[] data = new byte[(int)file.length()];
-            fis.read(data);
-            fis.close();
-            dataString = new String(data);
+             fcIn = loadFile(file);
         }
         catch (FileNotFoundException fnfe) {
             view.statusBar().setStatus("FILE NOT FOUND: "+file.getName());
@@ -101,22 +81,33 @@ public class ModelController {
             view.statusBar().setStatus("IO EXCEPTION: "+file.getName());
             return;
         }
-        if(checkFile(dataString)) {
-            view.getTextArea().setText(dataString);
-            view.statusBar().setFilename(file.getAbsolutePath());
-            view.setTitle(file.getName());
+
+        if(fcIn.equals(FileCheck.TEXT_FILE)) {
+            view.setTextMode();
+            mode = FileMode.TEXT;
             view.statusBar().setStatus("OPEN SUCCESSFUL");
         }
-        else {
-            view.statusBar().setStatus("FILE NOT TEXT OR TOO LARGE");
+        else if(fcIn.equals(FileCheck.BINARY_FILE)) {
+            view.setBinaryMode();
+            mode = FileMode.BINARY;
+            view.statusBar().setStatus("BINARY OPEN SUCCESSFUL");
         }
+        else if(fcIn.equals(FileCheck.LARGE_FILE)) {
+            view.statusBar().setStatus("FILE TOO LARGE");
+            return;
+        }
+
+        updateView();
+        view.statusBar().setFilename(file.getAbsolutePath());
+        view.setTitle(file.getName());
     }
 
     public void saveFile(File filename) {
         try {
-            PrintWriter pw = new PrintWriter(new FileWriter(filename));
-            pw.print(view.getTextArea().getText());
-            pw.close();
+            FileOutputStream fos2 = new FileOutputStream(filename);
+            fos2.write(data.bytes(), 0, data.length());
+            fos2.flush();
+            fos2.close();
         }
         catch (IOException ioe) {
             view.statusBar().setStatus("IO EXCEPTION: "+filename);
@@ -125,19 +116,52 @@ public class ModelController {
         view.statusBar().setFilename(filename.getAbsolutePath());
         view.setTitle(filename.getName());
         view.statusBar().setStatus("SAVE SUCCESSFUL");
+    }
 
+    //Push data from model to view
+    private void updateView() {
+        if(mode.equals(FileMode.TEXT)) {
+            view.getTextArea().setText(data.text());
+        }
+        //Notifies change in underlying data
+        else if(mode.equals(FileMode.BINARY)) {
+            view.getTextArea().setText(view.getTextArea().getText());
+        }
+    }
+    //Pull data from view to model
+    private void updateModel() {
+        if(mode.equals(FileMode.TEXT)){
+            data.set(view.getTextArea().getText());
+        }
     }
 
     public void encrypt(String key) {
         if(!checkKey(key)) return;
-        view.getTextArea().setText(aes.encrypt(key, view.getTextArea().getText()));
+
+        updateModel();
+        data.set(aes.encrypt(key.getBytes(), data.bytes()));
+
+        //Convert text based encryption to base64 for easier copy/paste
+        if(mode.equals(FileMode.TEXT)) {
+            data.set(data.toBase64());
+        }
+        updateView();
         view.statusBar().setStatus("ENCRYPT SUCCESSFUL");
     }
 
     public void decrypt (String key) {
+        updateModel();
         if(!checkKey(key)) return;
         try {
-            view.getTextArea().setText(aes.decrypt(key, view.getTextArea().getText()));
+            if(mode.equals(FileMode.TEXT)) {
+                //Text encryption needs to be decoded from b64 first
+                data.set(aes.decrypt(key.getBytes(), data.fromBase64()));
+            }
+            else if (mode.equals(FileMode.BINARY)) {
+                data.set(aes.decrypt(key.getBytes(), data.bytes()));
+            }
+            updateView();
+
         }
         catch (Base64DecodingException b64de) {
             //Base64DecodingException is a result of trying to decrypt something that isn't encrypted

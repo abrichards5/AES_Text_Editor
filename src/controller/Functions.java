@@ -30,9 +30,6 @@ public class Functions {
             view.statusBar().setStatus(count + " matches");
         }
     }
-    public void switchCrypto() {
-        model.switchCrypto();
-    }
 
     public void setModified() {
         isModified = true;

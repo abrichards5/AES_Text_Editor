@@ -30,8 +30,6 @@ public class MenuBar extends JMenuBar {
 
     private JMenu settings = new JMenu("Settings");
     private JMenuItem wordWrap = new JMenuItem();
-    private JMenuItem switchCrypto = new JMenuItem();
-
     public MenuBar() {
         file.add(newFile);
         file.add(open);
@@ -50,7 +48,6 @@ public class MenuBar extends JMenuBar {
         this.add(crypto);
 
         settings.add(wordWrap);
-        settings.add(switchCrypto);
         this.add(settings);
 
         this.setVisible(true);
@@ -123,17 +120,9 @@ public class MenuBar extends JMenuBar {
         wordWrap.setActionCommand("wordwrap");
         wordWrap.addActionListener(al);
         wordWrap.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, InputEvent.CTRL_DOWN_MASK));
-
-        switchCrypto.setMnemonic('y');
-        switchCrypto.setActionCommand("switchcrypto");
-        switchCrypto.addActionListener(al);
-        switchCrypto.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Y, InputEvent.CTRL_DOWN_MASK+InputEvent.SHIFT_DOWN_MASK));
     }
 
     public void setWordWrapText(String s) {
         wordWrap.setText(s);
-    }
-    public void setSwitchCryptoText(String s) {
-        switchCrypto.setText(s);
     }
 }

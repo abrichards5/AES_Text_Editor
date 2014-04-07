@@ -13,8 +13,9 @@ import javax.crypto.IllegalBlockSizeException;
  */
 public interface Cryptographer {
 
-    public final static String ECB = "ECB";
-    public final static String CBC = "CBC";
-    public String encrypt (String key, String data);
-    public String decrypt (String key, String data) throws Base64DecodingException, BadPaddingException, IllegalBlockSizeException;
+    public byte[] encrypt (byte[] key, byte[] data);
+    public byte[] decrypt (byte[] key, byte[] data) throws Base64DecodingException, BadPaddingException, IllegalBlockSizeException;
+
+    public String getMode();
+
 }
