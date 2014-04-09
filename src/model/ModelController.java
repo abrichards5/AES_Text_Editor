@@ -103,6 +103,7 @@ public class ModelController {
     }
 
     public void saveFile(File filename) {
+        updateModel();
         try {
             FileOutputStream fos2 = new FileOutputStream(filename);
             fos2.write(data.bytes(), 0, data.length());

@@ -3,8 +3,13 @@ package controller;
 import model.ModelController;
 import view.AppFrame;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
 import javax.swing.*;
 import java.io.File;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.spec.InvalidParameterSpecException;
 
 /**
  * Created by alutman on 17/03/14.
@@ -125,6 +130,12 @@ public class Functions {
             }
 
 
+        }
+    }
+    public void openDirect(File f) {
+        if(checkSaved()) {
+            model.openFile(f);
+            isModified = false;
         }
     }
 }

@@ -1,9 +1,7 @@
 package model;
 
-import com.sun.org.apache.xml.internal.security.exceptions.Base64DecodingException;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
-
 
 /**
  * Created by alutman on 18/03/14.
@@ -14,7 +12,7 @@ import javax.crypto.IllegalBlockSizeException;
 public interface Cryptographer {
 
     public byte[] encrypt (byte[] key, byte[] data);
-    public byte[] decrypt (byte[] key, byte[] data) throws Base64DecodingException, BadPaddingException, IllegalBlockSizeException;
+    public byte[] decrypt (byte[] key, byte[] data) throws BadPaddingException, IllegalBlockSizeException;
 
     public String getMode();
 

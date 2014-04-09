@@ -3,7 +3,10 @@ package view;
 import javax.swing.*;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
+import java.awt.dnd.DropTarget;
+import java.awt.dnd.DropTargetListener;
 import java.awt.event.*;
+import java.util.TooManyListenersException;
 
 /**
  * Created by alutman on 14/03/14.
@@ -14,6 +17,7 @@ import java.awt.event.*;
 public class AppFrame extends JFrame {
 
     private MenuBar menu = new MenuBar();
+
 
     private TextArea textArea = new TextArea();
     private JScrollPane textScroll = new JScrollPane(textArea);
@@ -39,10 +43,13 @@ public class AppFrame extends JFrame {
     public DialogBuilder dialogs() {
         return dialogs;
     }
-    public void setListener(ActionListener al, DocumentListener dl, WindowListener wl) {
+    public void setListener(ActionListener al, DocumentListener dl, WindowListener wl, DropTargetListener dtl) throws TooManyListenersException {
         menu.setListener(al);
         textArea.setListener(dl);
         this.addWindowListener(wl);
+        DropTarget dt = new DropTarget();
+        dt.addDropTargetListener(dtl);
+        textArea.setDropTarget(dt);
     }
 
     private void makeLayout() {
@@ -78,6 +85,7 @@ public class AppFrame extends JFrame {
         textArea.setEditable(true);
         textArea.setBackground(Color.WHITE);
     }
+
 
 
 

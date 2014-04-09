@@ -1,14 +1,12 @@
 package model;
 
-import com.sun.org.apache.xml.internal.security.exceptions.Base64DecodingException;
-import com.sun.org.apache.xml.internal.security.utils.Base64;
-
 import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidParameterSpecException;
 import java.security.spec.KeySpec;
 
@@ -35,7 +33,8 @@ public class CBCCryptographer implements Cryptographer{
             cipher = Cipher.getInstance(CIPHER_ALGORITHM);
             System.out.println("Using: "+CIPHER_ALGORITHM+", with hash: "+HASH_ALGORITHM);
         }
-        catch (Exception e) {
+        catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
+            //Hardcoded algorithm shouldn't ever throw this
             e.printStackTrace();
             System.exit(1);
         }
@@ -80,32 +79,18 @@ public class CBCCryptographer implements Cryptographer{
             //Encode to B64
             return cipherText;
         }
-        catch (InvalidParameterSpecException e) {
-            System.err.println("CBCCryptographer.encrypt() InvalidAlgorithmParameterException: "+e.getMessage());
+        catch (IllegalBlockSizeException | BadPaddingException | InvalidParameterSpecException | InvalidKeyException e) {
+            //Shouldn't occur
+            e.printStackTrace();
             System.exit(1);
         }
-        catch (InvalidKeyException e) {
-            System.err.println("CBCCryptographer.encrypt() InvalidKeyException: "+e.getMessage());
-            System.exit(1);
-        }
-        catch (IllegalBlockSizeException e) {
-            System.err.println("CBCCryptographer.encrypt() InvalidBlockSizeException: "+e.getMessage());
-            System.exit(1);
-        }
-        catch (BadPaddingException e) {
-            System.err.println("CBCCryptographer.encrypt() BadPaddingException: "+e.getMessage());
-            System.exit(1);
-        }
-
         return null;
     }
 
     @Override
-    public byte[] decrypt(byte[] key, byte[] data) throws Base64DecodingException, BadPaddingException, IllegalBlockSizeException{
+    public byte[] decrypt(byte[] key, byte[] data) throws BadPaddingException, IllegalBlockSizeException {
+        SecretKey secretKey = generateSecretKey(new String(key));
         try {
-            SecretKey secretKey = generateSecretKey(new String(key));
-
-            //Decode from 64
             byte[] encrypt = data;
 
             //pull out the iv from the encrypted data
@@ -121,16 +106,12 @@ public class CBCCryptographer implements Cryptographer{
 
             //Decrypt
             return cipher.doFinal(ciphertext);
-
-        }
-        catch (InvalidAlgorithmParameterException e) {
-            System.err.println("CBCCryptographer.decrypt() InvalidAlgorithmParameterException: "+e.getMessage());
-            System.exit(1);
-        }
-        catch (InvalidKeyException e) {
-            System.err.println("CBCCryptographer.decrypt() InvalidKeyException: "+e.getMessage());
+        } catch (InvalidAlgorithmParameterException | InvalidKeyException e) {
+            //Shouldn't occur
+            e.printStackTrace();
             System.exit(1);
         }
         return null;
+
     }
 }

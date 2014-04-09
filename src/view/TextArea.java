@@ -24,6 +24,7 @@ public class TextArea extends JTextArea {
 
     public TextArea() {
         thisDoc = this.getDocument();
+        this.setDragEnabled(true);
         thisDoc.addUndoableEditListener(new UndoableEditListener() {
             @Override
             public void undoableEditHappened(UndoableEditEvent e) {
