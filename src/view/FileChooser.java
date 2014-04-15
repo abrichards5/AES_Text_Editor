@@ -9,8 +9,8 @@ import java.io.File;
  * Customizes the filechooser in DialogBuilder to ask for overwrite
  */
 
-public class FileChooser extends JFileChooser {
-    private DialogBuilder dialogs;
+class FileChooser extends JFileChooser {
+    private final DialogBuilder dialogs;
 
     public FileChooser(DialogBuilder dialogs) {
         this.dialogs = dialogs;

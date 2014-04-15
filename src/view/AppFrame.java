@@ -16,14 +16,14 @@ import java.util.TooManyListenersException;
  */
 public class AppFrame extends JFrame {
 
-    private MenuBar menu = new MenuBar();
+    private final MenuBar menu = new MenuBar();
 
 
-    private TextArea textArea = new TextArea();
-    private JScrollPane textScroll = new JScrollPane(textArea);
-    private DialogBuilder dialogs = new DialogBuilder(this);
+    private final TextArea textArea = new TextArea();
+    private final JScrollPane textScroll = new JScrollPane(textArea);
+    private final DialogBuilder dialogs = new DialogBuilder(this);
 
-    private StatusBar statusBar = new StatusBar();
+    private final StatusBar statusBar = new StatusBar();
 
 
     public AppFrame() {

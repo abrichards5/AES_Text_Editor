@@ -19,8 +19,8 @@ import java.awt.*;
  *
  */
 public class TextArea extends JTextArea {
-    private UndoManager undoMan = new UndoManager();
-    private Document thisDoc;
+    private final UndoManager undoMan = new UndoManager();
+    private final Document thisDoc;
 
     public TextArea() {
         thisDoc = this.getDocument();
@@ -42,7 +42,13 @@ public class TextArea extends JTextArea {
         if (undoMan.canRedo()) {
             undoMan.redo();
         }
+    }
 
+    @Override
+    public void setText(String text) {
+        super.setText(text);
+        // Set text means a new file is being opened. Don't want to undo into a previous file's data
+        undoMan.discardAllEdits();
     }
     public void setListener(DocumentListener dl) {
         thisDoc.addDocumentListener(dl);
@@ -85,30 +91,6 @@ public class TextArea extends JTextArea {
         }
         return count;
 
-    }
-
-    @Deprecated
-    public int highlightOld(String searchWord) {
-        removeHighlight();
-        if(searchWord == null || searchWord.equals("")) {
-            //Trying to highlight "" goes into an infinite loop and ends up using GBs of RAM
-            return -1;
-        }
-        Highlighter.HighlightPainter painter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
-        int offset = getText().indexOf(searchWord);
-        int length = searchWord.length();
-        int count = 0;
-        while ( offset != -1)
-        {
-            try
-            {
-                this.getHighlighter().addHighlight(offset, offset + length, painter);
-                count++;
-                offset = getText().indexOf(searchWord, offset + 1);
-            }
-            catch(BadLocationException ble) { System.out.println(ble); }
-        }
-        return count;
     }
 
 }

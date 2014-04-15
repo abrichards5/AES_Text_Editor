@@ -11,25 +11,25 @@ import java.awt.event.KeyEvent;
  * Top menu bar view.
  *
  */
-public class MenuBar extends JMenuBar {
-    private JMenu file = new JMenu("File");
-    private JMenuItem open = new JMenuItem("Open");
-    private JMenuItem newFile = new JMenuItem("New");
-    private JMenuItem save = new JMenuItem("Save");
-    private JMenuItem saveAs = new JMenuItem("Save As");
-    private JMenuItem exit = new JMenuItem("Exit");
+class MenuBar extends JMenuBar {
+    private final JMenu file = new JMenu("File");
+    private final JMenuItem open = new JMenuItem("Open");
+    private final JMenuItem newFile = new JMenuItem("New");
+    private final JMenuItem save = new JMenuItem("Save");
+    private final JMenuItem saveAs = new JMenuItem("Save As");
+    private final JMenuItem exit = new JMenuItem("Exit");
 
-    private JMenu edit = new JMenu("Edit");
-    private JMenuItem undo = new JMenuItem("Undo");
-    private JMenuItem redo = new JMenuItem("Redo");
-    private JMenuItem find = new JMenuItem("Find");
+    private final JMenu edit = new JMenu("Edit");
+    private final JMenuItem undo = new JMenuItem("Undo");
+    private final JMenuItem redo = new JMenuItem("Redo");
+    private final JMenuItem find = new JMenuItem("Find");
 
-    private JMenu crypto = new JMenu("Crypto");
-    private JMenuItem encrypt = new JMenuItem("Encrypt");
-    private JMenuItem decrypt = new JMenuItem("Decrypt");
+    private final JMenu crypto = new JMenu("Crypto");
+    private final JMenuItem encrypt = new JMenuItem("Encrypt");
+    private final JMenuItem decrypt = new JMenuItem("Decrypt");
 
-    private JMenu settings = new JMenu("Settings");
-    private JMenuItem wordWrap = new JMenuItem();
+    private final JMenu settings = new JMenu("Settings");
+    private final JMenuItem wordWrap = new JMenuItem();
     public MenuBar() {
         file.add(newFile);
         file.add(open);

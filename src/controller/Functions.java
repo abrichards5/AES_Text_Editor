@@ -3,13 +3,8 @@ package controller;
 import model.ModelController;
 import view.AppFrame;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
 import javax.swing.*;
 import java.io.File;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.spec.InvalidParameterSpecException;
 
 /**
  * Created by alutman on 17/03/14.
@@ -19,8 +14,8 @@ import java.security.spec.InvalidParameterSpecException;
  */
 public class Functions {
     
-    private AppFrame view;
-    private ModelController model;
+    private final AppFrame view;
+    private final ModelController model;
     private boolean isModified = false;
 
     public Functions(AppFrame view, ModelController model) {
@@ -57,7 +52,7 @@ public class Functions {
 
     // Checks to see if the text area has been modified recently and if it has, ask to save the file.
     // The return type is used to see if the user wants to continue on (close the current file)
-    public boolean checkSaved() {
+    boolean checkSaved() {
         if(isModified) {
             int choice = view.dialogs().confirmCloseFileDialog();
             if(choice  == JOptionPane.YES_OPTION) {

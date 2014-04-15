@@ -2,23 +2,23 @@ package model;
 
 /**
  * Created by alutman on 7/04/14.
+ *
+ * Enumerated values for the different modes a file can be used in
+ *
  */
 public enum FileMode {
     
     TEXT("TEXT"),
     BINARY("BINARY");
     
-    String name;
+    private final String name;
     
     FileMode(String name) {
         this.name = name;
     }
     
     public boolean equals(FileMode mode) {
-        if (mode.toString().equals(this.toString())) {
-            return true;
-        }
-        return false;
+        return mode.toString().equals(this.toString());
     }
     @Override
     public String toString() {

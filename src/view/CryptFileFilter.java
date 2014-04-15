@@ -7,7 +7,7 @@ import java.io.File;
  * Created by alutman on 20/03/14.
  * filter for save/open dialog
  */
-public class CryptFileFilter extends FileFilter {
+class CryptFileFilter extends FileFilter {
 
     public static final String ENC_EXT = "enc";
     @Override
@@ -18,10 +18,7 @@ public class CryptFileFilter extends FileFilter {
 
         String extension = getExtension(f);
         if (extension != null) {
-            if (extension.equals(ENC_EXT)) {
-                return true;
-            }
-            return false;
+            return extension.equals(ENC_EXT);
         }
 
         return false;

@@ -91,18 +91,16 @@ public class CBCCryptographer implements Cryptographer{
     public byte[] decrypt(byte[] key, byte[] data) throws BadPaddingException, IllegalBlockSizeException {
         SecretKey secretKey = generateSecretKey(new String(key));
         try {
-            byte[] encrypt = data;
-
             //pull out the iv from the encrypted data
             byte[] iv = new byte[IV_LENGTH];
-            System.arraycopy(encrypt,0,iv,0,IV_LENGTH);
+            System.arraycopy(data,0,iv,0,IV_LENGTH);
 
             //Initialize with extracted IV
             cipher.init(Cipher.DECRYPT_MODE, secretKey, new IvParameterSpec(iv));
 
             //Cut out data after IV
-            byte[] ciphertext = new byte[encrypt.length - IV_LENGTH];
-            System.arraycopy(encrypt, IV_LENGTH, ciphertext, 0, ciphertext.length);
+            byte[] ciphertext = new byte[data.length - IV_LENGTH];
+            System.arraycopy(data, IV_LENGTH, ciphertext, 0, ciphertext.length);
 
             //Decrypt
             return cipher.doFinal(ciphertext);

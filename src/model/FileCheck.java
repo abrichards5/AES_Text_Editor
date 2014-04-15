@@ -2,6 +2,9 @@ package model;
 
 /**
  * Created by alutman on 7/04/14.
+ *
+ * Enumerated values for return types when checking a file
+ *
  */
 public enum FileCheck {
 
@@ -9,17 +12,14 @@ public enum FileCheck {
     TEXT_FILE("TEXT_FILE"),
     LARGE_FILE("LARGE_FILE");
 
-    String name;
+    private final String name;
 
     FileCheck(String name) {
         this.name = name;
     }
 
     public boolean equals(FileMode mode) {
-        if (mode.toString().equals(this.toString())) {
-            return true;
-        }
-        return false;
+        return mode.toString().equals(this.toString());
     }
     @Override
     public String toString() {

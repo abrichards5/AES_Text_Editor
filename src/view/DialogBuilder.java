@@ -12,8 +12,8 @@ import java.io.File;
  */
 public class DialogBuilder {
     
-    private AppFrame af;
-    FileChooser fileChooser = new FileChooser(this);
+    private final AppFrame af;
+    private final FileChooser fileChooser = new FileChooser(this);
     
     public DialogBuilder(AppFrame af) {
         this.af = af;
@@ -31,13 +31,7 @@ public class DialogBuilder {
         return hiddenInputDialog("Enter KEY", "Enter encryption/decryption KEY");
     }
 
-    @Deprecated
-    public String visibleInputDialog(String title, String message) {
-        return JOptionPane.showInputDialog(af,message,
-                title, JOptionPane.PLAIN_MESSAGE);
-    }
-
-    public String hiddenInputDialog(String title, String message) {
+    String hiddenInputDialog(String title, String message) {
         JPanel panel = new JPanel();
         JLabel label = new JLabel(message);
         final JPasswordField pass = new JPasswordField();

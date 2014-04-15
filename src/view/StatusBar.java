@@ -9,9 +9,9 @@ import java.awt.*;
  * Bottom status bar view
  */
 public class StatusBar extends JPanel {
-    private JLabel fileName = new JLabel(" ");
-    private JLabel status = new JLabel(" ");
-    JLabel mode = new JLabel(" ");
+    private final JLabel fileName = new JLabel(" ");
+    private final JLabel status = new JLabel(" ");
+    private final JLabel mode = new JLabel(" ");
 
     public StatusBar () {
         this.setLayout(new GridLayout(2,1));
@@ -57,10 +57,7 @@ public class StatusBar extends JPanel {
         return fileName.getText();
     }
     public boolean hasFilename() {
-        if(fileName.getText().equals(" ") || fileName.getText().equals("")) {
-            return false;
-        }
-        return true;
+        return !(fileName.getText().equals(" ") || fileName.getText().equals(""));
     }
 
 }

@@ -17,9 +17,9 @@ import java.io.*;
  */
 public class ModelController {
 
-    private Cryptographer aes;
-    private AppFrame view;
-    private ByteData data = new ByteData();
+    private final Cryptographer aes;
+    private final AppFrame view;
+    private final ByteData data = new ByteData();
     private FileMode mode = FileMode.TEXT;
     private final long MAX_SIZE =  50000000L; //50mb
 

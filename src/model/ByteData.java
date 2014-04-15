@@ -5,8 +5,11 @@ import com.sun.org.apache.xml.internal.security.utils.Base64;
 
 /**
  * Created by alutman on 7/04/14.
+ *
+ * Represents data stored in bytes within the model.
+ *
  */
-public class ByteData {
+class ByteData {
 
     private byte[] data;
 
