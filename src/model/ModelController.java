@@ -61,11 +61,18 @@ public class ModelController {
         fis.close();
 
         for (byte c : dataIn) {
-            if(c <= 0){
+            if(!validByte(c)){
                 return FileCheck.BINARY_FILE;
             }
         }
         return FileCheck.TEXT_FILE;
+    }
+
+    private boolean validByte(byte b) {
+        if(b < 0x7F) {
+            return true;
+        }
+        return false;
     }
 
     public void openFile(File file) {

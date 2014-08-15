@@ -3,6 +3,8 @@ package model;
 import com.sun.org.apache.xml.internal.security.exceptions.Base64DecodingException;
 import com.sun.org.apache.xml.internal.security.utils.Base64;
 
+import java.io.UnsupportedEncodingException;
+
 /**
  * Created by alutman on 7/04/14.
  *
@@ -38,8 +40,14 @@ class ByteData {
     }
 
     public String text() {
-        return new String(data);
-    }
+        try {
+            return new String(data, "UTF-8");
+        }
+        catch(UnsupportedEncodingException uee) {
+            System.err.println(uee.getMessage());
+        }
+        return null;
 
+    }
 
 }
