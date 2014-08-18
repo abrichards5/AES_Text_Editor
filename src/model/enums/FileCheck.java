@@ -1,4 +1,4 @@
-package model;
+package model.enums;
 
 /**
  * Created by alutman on 7/04/14.
@@ -10,7 +10,8 @@ public enum FileCheck {
 
     BINARY_FILE("BINARY_FILE"),
     TEXT_FILE("TEXT_FILE"),
-    LARGE_FILE("LARGE_FILE");
+    LARGE_FILE("LARGE_FILE"),
+    ERROR("ERROR");
 
     private final String name;
 
@@ -35,6 +36,9 @@ public enum FileCheck {
         }
         else if (name.equals(FileCheck.LARGE_FILE.toString())) {
             return LARGE_FILE;
+        }
+        else if (name.equals(FileCheck.ERROR.toString())) {
+            return ERROR;
         }
         else {
             return null;

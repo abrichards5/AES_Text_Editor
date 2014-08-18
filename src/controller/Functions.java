@@ -1,6 +1,5 @@
 package controller;
 
-import model.ModelController;
 import view.AppFrame;
 
 import javax.swing.*;
@@ -15,10 +14,10 @@ import java.io.File;
 public class Functions {
     
     private final AppFrame view;
-    private final ModelController model;
+    private final GUIModel model;
     private boolean isModified = false;
 
-    public Functions(AppFrame view, ModelController model) {
+    public Functions(AppFrame view, GUIModel model) {
         this.view = view;
         this.model = model;
     }

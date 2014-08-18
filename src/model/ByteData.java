@@ -11,7 +11,7 @@ import java.io.UnsupportedEncodingException;
  * Represents data stored in bytes within the model.
  *
  */
-class ByteData {
+public class ByteData {
 
     private byte[] data;
 
@@ -21,7 +21,12 @@ class ByteData {
         this.data = data;
     }
     public void set(String data) {
-        this.data = data.getBytes();
+        try {
+            this.data = data.getBytes("UTF-8");
+        } catch (UnsupportedEncodingException uee) {
+            System.err.println(uee.getMessage());
+            System.exit(1);
+        }
     }
     public int length() {
         return data.length;
@@ -45,6 +50,7 @@ class ByteData {
         }
         catch(UnsupportedEncodingException uee) {
             System.err.println(uee.getMessage());
+            System.exit(1);
         }
         return null;
 
