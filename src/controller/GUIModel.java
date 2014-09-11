@@ -3,8 +3,8 @@ package controller;
 import model.BaseModel;
 import model.Cryptographer;
 import model.enums.CryptStatus;
-import model.enums.FileCheck;
-import model.enums.FileMode;
+import model.enums.Encoding;
+import model.enums.FileStatus;
 import view.AppFrame;
 
 import java.io.*;
@@ -28,37 +28,37 @@ public class GUIModel extends BaseModel {
     private void cryptoUpdateGUI() {
         String curMode = getCurrentCryptoMode();
         view.statusBar().setMode(curMode);
+        view.statusBar().setEncoding(getEncoding().toString());
     }
 
     public void newFile() {
-        mode = FileMode.TEXT;
         view.setTextMode();
         view.getTextArea().setText("");
         view.statusBar().setFilename("");
         view.setTitle("");
     }
 
-    public FileCheck openFile(File file) {
-        FileCheck fc = null;
+    public FileStatus openFile(File file) {
+        FileStatus fc = null;
         try {
             fc = super.openFile(file);
         } catch(IOException ioe) {
             view.statusBar().setStatus("OPEN FAILED");
-            return FileCheck.ERROR;
+            return FileStatus.ERROR;
         }
         String status = null;
-        if(fc.equals(FileCheck.TEXT_FILE)) {
+        if(fc.equals(FileStatus.TEXT_FILE)) {
             view.setTextMode();
             status = "OPEN SUCCESSFUL";
         }
-        else if(fc.equals(FileCheck.BINARY_FILE)) {
+        else if(fc.equals(FileStatus.BINARY_FILE)) {
             view.setBinaryMode();
             status = "BINARY OPEN SUCCESSFUL";
         }
-        else if(fc.equals(FileCheck.LARGE_FILE)) {
+        else if(fc.equals(FileStatus.LARGE_FILE)) {
             status = "FILE TOO LARGE";
         }
-        else if(fc.equals(FileCheck.ERROR)) {
+        else if(fc.equals(FileStatus.ERROR)) {
             status = "ERROR IN OPENING";
         }
 
@@ -66,7 +66,8 @@ public class GUIModel extends BaseModel {
         view.statusBar().setFilename(file.getAbsolutePath());
         view.setTitle(file.getName());
         view.statusBar().setStatus(status);
-        return FileCheck.ERROR;
+        view.statusBar().setEncoding(getEncoding().toString());
+        return FileStatus.ERROR;
     }
 
     public void saveFile(File filename) {
@@ -85,24 +86,37 @@ public class GUIModel extends BaseModel {
 
     //Push data from model to view
     private void updateView() {
-        if(mode.equals(FileMode.TEXT)) {
+        if(getData().getMode().equals(FileStatus.TEXT_FILE)) {
             view.getTextArea().setText(getData().text());
         }
         //Notifies change in underlying data
-        else if(mode.equals(FileMode.BINARY)) {
+        else if(getData().getMode().equals(FileStatus.BINARY_FILE)) {
             view.getTextArea().setText(view.getTextArea().getText());
         }
     }
     //Pull data from view to model
     private void updateModel() {
-        if(mode.equals(FileMode.TEXT)){
+        if(getData().getMode().equals(FileStatus.TEXT_FILE)) {
             getData().set(view.getTextArea().getText());
         }
     }
 
+    @Override
+    public void setEncoding(Encoding e) {
+        super.setEncoding(e);
+        view.statusBar().setEncoding(getEncoding().toString());
+    }
+
+
     public CryptStatus encrypt(String key) {
         updateModel();
         String result = super.encrypt(key).toString();
+        if(getData().getMode().equals(FileStatus.BINARY_FILE)) {
+            view.setBinaryMode();
+        }
+        else {
+            view.setTextMode();
+        }
         updateView();
         view.statusBar().setStatus(result);
         return null;
@@ -111,6 +125,12 @@ public class GUIModel extends BaseModel {
     public CryptStatus decrypt (String key) {
         updateModel();
         String result = super.decrypt(key).toString();
+        if(getData().getMode().equals(FileStatus.BINARY_FILE)) {
+            view.setBinaryMode();
+        }
+        else {
+            view.setTextMode();
+        }
         updateView();
         view.statusBar().setStatus(result);
         return null;

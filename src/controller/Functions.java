@@ -1,5 +1,6 @@
 package controller;
 
+import model.enums.Encoding;
 import view.AppFrame;
 
 import javax.swing.*;
@@ -131,5 +132,9 @@ public class Functions {
             model.openFile(f);
             isModified = false;
         }
+    }
+
+    public void setEncoding(Encoding e) {
+        model.setEncoding(e);
     }
 }

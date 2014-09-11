@@ -30,6 +30,16 @@ class MenuBar extends JMenuBar {
 
     private final JMenu settings = new JMenu("Settings");
     private final JMenuItem wordWrap = new JMenuItem();
+
+    private final JMenu encoding = new JMenu("Encoding");
+    private final JMenuItem encBase64 = new JMenuItem("Base 64");
+    private final JMenuItem encHex = new JMenuItem("Hex");
+    private final JMenuItem encNone = new JMenuItem("None");
+
+    private final JMenu info = new JMenu("Info");
+    private final JMenuItem version = new JMenuItem("Version");
+
+
     public MenuBar() {
         file.add(newFile);
         file.add(open);
@@ -49,6 +59,13 @@ class MenuBar extends JMenuBar {
 
         settings.add(wordWrap);
         this.add(settings);
+        settings.add(encoding);
+        encoding.add(encBase64);
+        encoding.add(encHex);
+        encoding.add(encNone);
+
+        this.add(info);
+        info.add(version);
 
         this.setVisible(true);
         this.setEnabled(true);
@@ -120,6 +137,24 @@ class MenuBar extends JMenuBar {
         wordWrap.setActionCommand("wordwrap");
         wordWrap.addActionListener(al);
         wordWrap.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, InputEvent.CTRL_DOWN_MASK));
+
+        encoding.setMnemonic('e');
+
+        encBase64.setMnemonic('6');
+        encBase64.setActionCommand("encbase64");
+        encBase64.addActionListener(al);
+
+        encHex.setMnemonic('h');
+        encHex.setActionCommand("enchex");
+        encHex.addActionListener(al);
+
+        encNone.setMnemonic('n');
+        encNone.setActionCommand("encnone");
+        encNone.addActionListener(al);
+        encNone.setEnabled(false); //TODO
+
+        version.setActionCommand("version");
+        version.addActionListener(al);
     }
 
     public void setWordWrapText(String s) {

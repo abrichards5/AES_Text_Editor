@@ -22,7 +22,7 @@ public enum CryptStatus {
         this.name = name;
     }
 
-    public boolean equals(FileMode mode) {
+    public boolean equals(CryptStatus mode) {
         return mode.toString().equals(this.toString());
     }
     @Override

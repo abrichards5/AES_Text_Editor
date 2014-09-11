@@ -1,7 +1,10 @@
 package controller;
 
+import main.Program;
+import model.enums.Encoding;
 import view.AppFrame;
 
+import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.datatransfer.DataFlavor;
@@ -81,6 +84,18 @@ public class UserActionListener implements ActionListener, DocumentListener, Win
                 break;
             case "wordwrap":
                 model.switchWordWrap();
+                break;
+            case "encbase64":
+                model.setEncoding(Encoding.BASE64);
+                break;
+            case "enchex":
+                model.setEncoding(Encoding.HEX);
+                break;
+            case "encnone":
+                model.setEncoding(Encoding.NONE);
+                break;
+            case "version":
+                JOptionPane.showMessageDialog(view, "AES Text Editor\nVersion: "+ Program.VERSION, "Version", JOptionPane.INFORMATION_MESSAGE);
                 break;
         }
     }

@@ -6,7 +6,7 @@ package model.enums;
  * Enumerated values for return types when checking a file
  *
  */
-public enum FileCheck {
+public enum FileStatus {
 
     BINARY_FILE("BINARY_FILE"),
     TEXT_FILE("TEXT_FILE"),
@@ -15,11 +15,11 @@ public enum FileCheck {
 
     private final String name;
 
-    FileCheck(String name) {
+    FileStatus(String name) {
         this.name = name;
     }
 
-    public boolean equals(FileMode mode) {
+    public boolean equals(FileStatus mode) {
         return mode.toString().equals(this.toString());
     }
     @Override
@@ -27,17 +27,17 @@ public enum FileCheck {
         return name;
     }
 
-    public FileCheck toEnum(String name) {
-        if (name.equals(FileCheck.BINARY_FILE.toString())) {
+    public FileStatus toEnum(String name) {
+        if (name.equals(FileStatus.BINARY_FILE.toString())) {
             return BINARY_FILE;
         }
-        else if (name.equals(FileCheck.TEXT_FILE.toString())) {
+        else if (name.equals(FileStatus.TEXT_FILE.toString())) {
             return TEXT_FILE;
         }
-        else if (name.equals(FileCheck.LARGE_FILE.toString())) {
+        else if (name.equals(FileStatus.LARGE_FILE.toString())) {
             return LARGE_FILE;
         }
-        else if (name.equals(FileCheck.ERROR.toString())) {
+        else if (name.equals(FileStatus.ERROR.toString())) {
             return ERROR;
         }
         else {

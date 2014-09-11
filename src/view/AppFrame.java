@@ -17,8 +17,6 @@ import java.util.TooManyListenersException;
 public class AppFrame extends JFrame {
 
     private final MenuBar menu = new MenuBar();
-
-
     private final TextArea textArea = new TextArea();
     private final JScrollPane textScroll = new JScrollPane(textArea);
     private final DialogBuilder dialogs = new DialogBuilder(this);

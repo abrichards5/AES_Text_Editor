@@ -12,20 +12,20 @@ public class StatusBar extends JPanel {
     private final JLabel fileName = new JLabel(" ");
     private final JLabel status = new JLabel(" ");
     private final JLabel mode = new JLabel(" ");
+    private final JLabel encoding = new JLabel(" ");
 
     public StatusBar () {
-        this.setLayout(new GridLayout(2,1));
+        this.setLayout(new GridLayout(2,2));
         this.add(fileName);
+        this.add(encoding);
+        encoding.setHorizontalAlignment(SwingConstants.RIGHT);
 
-        JPanel lowerBar = new JPanel();
-        lowerBar.setLayout(new GridLayout(1,2));
-
-        lowerBar.add(status);
+        this.add(status);
 
         mode.setHorizontalAlignment(SwingConstants.RIGHT);
-        lowerBar.add(mode);
+        this.add(mode);
 
-        this.add(lowerBar);
+
     }
     public void setMode(String s) {
         if(s.equals("")) {
@@ -33,6 +33,14 @@ public class StatusBar extends JPanel {
         }
         else {
             mode.setText(s);
+        }
+    }
+    public void setEncoding(String s) {
+        if(s.equals("")) {
+            encoding.setText(" ");
+        }
+        else {
+            encoding.setText(s);
         }
     }
 

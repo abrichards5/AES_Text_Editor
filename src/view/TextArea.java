@@ -81,6 +81,8 @@ public class TextArea extends JTextArea {
         Highlighter.HighlightPainter painter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
         BoyerMooreHorspoolRaita bmhr = new BoyerMooreHorspoolRaita();
         offset = bmhr.searchString(data, offset, searchWord);
+        this.setCaretPosition(offset+searchWord.length());
+        this.setCaretPosition(offset);
         while(offset != -1) {
             try {
                 this.getHighlighter().addHighlight(offset, offset + searchWord.length(), painter);

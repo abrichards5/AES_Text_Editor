@@ -54,7 +54,7 @@ public class DialogBuilder {
             return new String(pass.getPassword());
         }
         else if (selected == JOptionPane.CANCEL_OPTION) {
-            return null;
+            return "";
         }
         return null;
     }
