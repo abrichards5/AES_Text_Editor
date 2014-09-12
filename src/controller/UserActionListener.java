@@ -94,8 +94,8 @@ public class UserActionListener implements ActionListener, DocumentListener, Win
             case "encnone":
                 model.setEncoding(Encoding.NONE);
                 break;
-            case "version":
-                JOptionPane.showMessageDialog(view, "AES Text Editor\nVersion: "+ Program.VERSION, "Version", JOptionPane.INFORMATION_MESSAGE);
+            case "about":
+                JOptionPane.showMessageDialog(view, "AES Text Editor\nVersion: "+ Program.VERSION, "Version", JOptionPane.INFORMATION_MESSAGE, view.ICON);
                 break;
         }
     }

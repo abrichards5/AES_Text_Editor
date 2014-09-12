@@ -31,6 +31,8 @@ public class TextArea extends JTextArea {
                 undoMan.addEdit(e.getEdit());
             }
         });
+        this.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
+        this.setTabSize(4);
     }
 
     public void undo() {

@@ -51,6 +51,7 @@ public class BaseModel {
         byte[] dataIn = new byte[(int)file.length()];
         fis.read(dataIn, 0, dataIn.length);
         data.set(dataIn);
+        data.detectMode();
         fis.close();
 
         if (data.getMode().equals(FileStatus.BINARY_FILE)) {
@@ -75,6 +76,7 @@ public class BaseModel {
 
         //Convert text based encryption to base64 for easier copy/paste
         data.encode();
+        data.detectMode();
 
         return CryptStatus.ENCRYPT_SUCCESS;
     }
@@ -84,6 +86,7 @@ public class BaseModel {
         try {
             data.decode();
             data.set(aes.decrypt(key.getBytes(), data.bytes()));
+            data.detectMode();
         }
         catch (InvalidEncryptionException iee) {
             //InvalidEncryptionException is a result of trying to decrypt something that isn't encrypted

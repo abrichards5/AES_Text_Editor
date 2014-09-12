@@ -1,5 +1,7 @@
 package view;
 
+import controller.exception.InputCancelledException;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
@@ -27,11 +29,11 @@ public class DialogBuilder {
         return JOptionPane.showConfirmDialog(af, "Save", "Save current file?", JOptionPane.YES_NO_CANCEL_OPTION);
     }
 
-    public String keyDialog() {
+    public String keyDialog() throws InputCancelledException {
         return hiddenInputDialog("Enter KEY", "Enter encryption/decryption KEY");
     }
 
-    String hiddenInputDialog(String title, String message) {
+    String hiddenInputDialog(String title, String message) throws InputCancelledException {
         JPanel panel = new JPanel();
         JLabel label = new JLabel(message);
         final JPasswordField pass = new JPasswordField();
@@ -54,7 +56,8 @@ public class DialogBuilder {
             return new String(pass.getPassword());
         }
         else if (selected == JOptionPane.CANCEL_OPTION) {
-            return "";
+            //Cannot differentiate between null input and cancel downstream using only the return value
+            throw new InputCancelledException();
         }
         return null;
     }

@@ -1,11 +1,14 @@
 package view;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetListener;
 import java.awt.event.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.TooManyListenersException;
 
 /**
@@ -23,15 +26,20 @@ public class AppFrame extends JFrame {
 
     private final StatusBar statusBar = new StatusBar();
 
+    public ImageIcon ICON = null;
+
 
     public AppFrame() {
-        this.setSize(500,500);
+        this.setSize(500, 500);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setTextWrap(false);
         setTitle("");
         makeLayout();
 
+        ICON = new ImageIcon(getClass().getClassLoader().getResource("image/encrypted-icon-64.png"));
+
+        this.setIconImage(ICON.getImage());
         this.setEnabled(true);
         this.setVisible(true);
     }

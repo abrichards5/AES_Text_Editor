@@ -18,11 +18,13 @@ import java.util.Scanner;
  * Created by alutman on 17/03/14.
  *
  * Start point
- *
- *
+ * TODO: Display settings. Font, size, tab width etc
+ * TODO: Improved find. Go to next, previous, ignore case, regex
+ * TODO: Fix KEY MUST NOT BE NULL message after cancelling an encrypt/decrypt
  */
 public class Program {
-    public static final String VERSION = "1.7a";
+    public static final String VERSION = "1.8";
+    public static final String NAME = "AES Text Editor";
 
     public static void main(String args[]) {
         parseCLI(args);
@@ -30,6 +32,7 @@ public class Program {
     private static void parseCLI(String[] args) {
         Options options = new Options();
         options.addOption("h", "help", false, "display this help");
+        options.addOption("v", "version", false, "display version");
         options.addOption(OptionBuilder.withLongOpt("encrypt")
                 .withDescription("encrypt a file")
                 .hasArg()
@@ -51,25 +54,27 @@ public class Program {
                 .withArgName("PASSWORD")
                 .create("p"));
         options.addOption(OptionBuilder.withLongOpt("encoding")
-                .withDescription("specify input/output encoding. Must be NONE(disabled), HEX or BASE64. Defaults to Base64 for text files, none for binary") //TODO
+                .withDescription("specify input/output encoding. Must be NONE, HEX or BASE64. Defaults to Base64 for text files, none for binary")
                 .hasArg()
                 .withArgName("ENCODING")
                 .create("t"));
 
+
         CommandLineParser parser = new BasicParser();
         try {
             CommandLine cmd = parser.parse(options, args);
-            if (cmd.hasOption("help")) apacheUsage(options, 0);
+            if (cmd.hasOption("help")) { usage(options, 0); }
+            if (cmd.hasOption("version")) { System.out.println(NAME+" v"+VERSION); System.exit(0); }
 
             String outfile, infile, encoding = "default", password = null;
-            if(cmd.hasOption("password")) password = cmd.getOptionValue("password");
-            if(cmd.hasOption("encoding")) encoding = cmd.getOptionValue("encoding");
+            if(cmd.hasOption("password")) { password = cmd.getOptionValue("password"); }
+            if(cmd.hasOption("encoding")) { encoding = cmd.getOptionValue("encoding"); }
 
             if(cmd.hasOption("decrypt")){
                 infile = cmd.getOptionValue("decrypt");
-                if(cmd.hasOption("outfile"))
+                if(cmd.hasOption("outfile")) {
                     outfile = cmd.getOptionValue("outfile");
-                else {
+                } else {
                     outfile = infile;
                 }
 
@@ -79,8 +84,7 @@ public class Program {
                 infile = cmd.getOptionValue("encrypt");
                 if(cmd.hasOption("outfile")) {
                     outfile = cmd.getOptionValue("outfile");
-                }
-                else {
+                } else {
                     outfile = infile;
                 }
 
@@ -91,11 +95,11 @@ public class Program {
             }
             else {
                 System.out.println("encrypt or decrypt must be specified");
-                apacheUsage(options, 1);
+                usage(options, 1);
             }
         } catch (ParseException e) {
             System.out.println(e.getMessage());
-            apacheUsage(options, 1);
+            usage(options, 1);
         } catch (IOException e) {
             System.out.println("Problem opening file: "+e.getMessage());
         } catch (InvalidEncodingException e) {
@@ -103,10 +107,9 @@ public class Program {
         }
 
     }
-    private static void apacheUsage(Options options, int exitVal) {
+    private static void usage(Options options, int exitVal) {
         HelpFormatter hf = new HelpFormatter();
-        hf.printHelp("AES Text Editor",
-                "v"+VERSION+"\n" +
+        hf.printHelp(NAME,
                         "Graphical tool to edit and encrypt/decrypt text files\n" +
                         "Run with no arguments to start the GUI\n" +
                         "Java 1.7 required",
@@ -128,7 +131,7 @@ public class Program {
             if(enc == null) {
                 throw new InvalidEncodingException("Invalid encoding: " + encoding);
             }
-            else if(!enc.equals(Encoding.NONE)){ //TODO
+            else {
                 bm.setEncoding(enc);
             }
         }

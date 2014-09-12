@@ -36,8 +36,8 @@ class MenuBar extends JMenuBar {
     private final JMenuItem encHex = new JMenuItem("Hex");
     private final JMenuItem encNone = new JMenuItem("None");
 
-    private final JMenu info = new JMenu("Info");
-    private final JMenuItem version = new JMenuItem("Version");
+    private final JMenu help = new JMenu("Help");
+    private final JMenuItem about = new JMenuItem("About");
 
 
     public MenuBar() {
@@ -64,8 +64,8 @@ class MenuBar extends JMenuBar {
         encoding.add(encHex);
         encoding.add(encNone);
 
-        this.add(info);
-        info.add(version);
+        this.add(help);
+        help.add(about);
 
         this.setVisible(true);
         this.setEnabled(true);
@@ -151,10 +151,12 @@ class MenuBar extends JMenuBar {
         encNone.setMnemonic('n');
         encNone.setActionCommand("encnone");
         encNone.addActionListener(al);
-        encNone.setEnabled(false); //TODO
 
-        version.setActionCommand("version");
-        version.addActionListener(al);
+        help.setMnemonic('h');
+
+        about.setMnemonic('a');
+        about.setActionCommand("about");
+        about.addActionListener(al);
     }
 
     public void setWordWrapText(String s) {

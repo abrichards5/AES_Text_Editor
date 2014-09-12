@@ -1,5 +1,6 @@
 package controller;
 
+import controller.exception.InputCancelledException;
 import model.enums.Encoding;
 import view.AppFrame;
 
@@ -77,13 +78,21 @@ public class Functions {
     }
 
     public void encrypt() {
-        String key;
-        key = view.dialogs().keyDialog();
+        String key = null;
+        try {
+            key = view.dialogs().keyDialog();
+        } catch (InputCancelledException e) {
+            return;
+        }
         model.encrypt(key);
     }
     public void decrypt() {
-        String key;
-        key = view.dialogs().keyDialog();
+        String key = null;
+        try {
+            key = view.dialogs().keyDialog();
+        } catch (InputCancelledException e) {
+            return;
+        }
         model.decrypt(key);
     }
     public boolean save() {

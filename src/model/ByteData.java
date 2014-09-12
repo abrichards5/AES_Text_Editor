@@ -28,7 +28,6 @@ public class ByteData {
     }
     public void set(byte[] data) {
         this.data = data;
-        detectMode();
     }
     public void set(String data) {
         try {
@@ -37,7 +36,6 @@ public class ByteData {
             System.err.println(uee.getMessage());
             System.exit(1);
         }
-        detectMode();
     }
     public int length() {
         return data.length;
@@ -74,25 +72,27 @@ public class ByteData {
             //Do nothing.
         }
     }
-    private void detectMode() {
-        detectMode(false);
-    }
-    private void detectMode(boolean type) {
+    public void detectMode() {
+        //Null bytes are never valid in text files but null bytes don't always appear in binary files.
         for (byte c : bytes()) {
-            byte[] bc = new byte[1];
-            bc[0] = c;
-            try {
-                if(type) System.out.println(c +" "+new String(bc, "UTF-8"));
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
             if(c == 0x00){
                 mode = FileStatus.BINARY_FILE;
                 return;
             }
         }
+        //Encoding to UTF-8 should produce the same byte length if all the characters are printable (i.e. Text)
+        try {
+            if (text().getBytes("UTF-8").length != data.length) {
+                mode = FileStatus.BINARY_FILE;
+                return;
+            }
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
         mode = FileStatus.TEXT_FILE;
     }
+
 
 
     public byte[] bytes() {
