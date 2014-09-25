@@ -49,6 +49,7 @@ public class TextArea extends JTextArea {
     @Override
     public void setText(String text) {
         super.setText(text);
+        this.setCaretPosition(0);
         // Set text means a new file is being opened. Don't want to undo into a previous file's data
         undoMan.discardAllEdits();
     }

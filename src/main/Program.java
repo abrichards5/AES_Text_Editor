@@ -20,10 +20,9 @@ import java.util.Scanner;
  * Start point
  * TODO: Display settings. Font, size, tab width etc
  * TODO: Improved find. Go to next, previous, ignore case, regex
- * TODO: Fix KEY MUST NOT BE NULL message after cancelling an encrypt/decrypt
  */
 public class Program {
-    public static final String VERSION = "1.8";
+    public static final String VERSION = "1.8a";
     public static final String NAME = "AES Text Editor";
 
     public static void main(String args[]) {
@@ -139,7 +138,16 @@ public class Program {
 
         if (pass == null) {
             System.out.print("Enter password: ");
-            pass = new Scanner(System.in).nextLine();
+
+            //Attempt to hide password input. Only works if the program is run from a true console
+            //Running from an IDE won't return a Console object, use Scanner in this case.
+            Console c = System.console();
+            try {
+                pass = new String(c.readPassword());
+            } catch (NullPointerException npe) {
+                pass = new Scanner(System.in).nextLine();
+            }
+
         }
         if(encrypt) {
             result = bm.encrypt(pass);
