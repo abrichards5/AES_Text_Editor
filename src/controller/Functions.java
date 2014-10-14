@@ -1,11 +1,15 @@
 package controller;
 
+import com.sun.org.apache.xerces.internal.impl.dv.util.HexBin;
 import controller.exception.InputCancelledException;
 import model.enums.Encoding;
 import view.AppFrame;
 
 import javax.swing.*;
 import java.io.File;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 
 /**
  * Created by alutman on 17/03/14.
@@ -30,8 +34,13 @@ public class Functions {
         if(count >= 0) {
             view.statusBar().setStatus(count + " matches");
         }
+        else {
+            view.statusBar().setStatus(modifiedStatus());
+        }
     }
-
+    public String modifiedStatus() {
+        return isModified ? "MODIFIED" : "";
+    }
     public void setModified() {
         isModified = true;
     }
@@ -44,7 +53,9 @@ public class Functions {
         }
     }
     public void undo() {
-        view.getTextArea().undo();
+        if(!view.getTextArea().undo()) {
+            isModified = false;
+        }
     }
 
     public void redo() {
@@ -71,6 +82,7 @@ public class Functions {
         }
         return true;
     }
+
     public void exit() {
         if (checkSaved()) {
             System.exit(0);

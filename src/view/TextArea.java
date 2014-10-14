@@ -35,10 +35,12 @@ public class TextArea extends JTextArea {
         this.setTabSize(4);
     }
 
-    public void undo() {
+    public boolean undo() {
         if (undoMan.canUndo()) {
             undoMan.undo();
+            return true;
         }
+        return false;
     }
     public void redo() {
         if (undoMan.canRedo()) {
@@ -50,8 +52,12 @@ public class TextArea extends JTextArea {
     public void setText(String text) {
         super.setText(text);
         this.setCaretPosition(0);
+
+    }
+    public void setText(String text, boolean discardEdits) {
+        this.setText(text);
         // Set text means a new file is being opened. Don't want to undo into a previous file's data
-        undoMan.discardAllEdits();
+        if(discardEdits) undoMan.discardAllEdits();
     }
     public void setListener(DocumentListener dl) {
         thisDoc.addDocumentListener(dl);
@@ -80,12 +86,13 @@ public class TextArea extends JTextArea {
         int count = 0;
         String data = getText();
 
-
         Highlighter.HighlightPainter painter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
         BoyerMooreHorspoolRaita bmhr = new BoyerMooreHorspoolRaita();
         offset = bmhr.searchString(data, offset, searchWord);
-        this.setCaretPosition(offset+searchWord.length());
-        this.setCaretPosition(offset);
+        if(offset >= 0) {
+            this.setCaretPosition(offset + searchWord.length());
+            this.setCaretPosition(offset);
+        }
         while(offset != -1) {
             try {
                 this.getHighlighter().addHighlight(offset, offset + searchWord.length(), painter);

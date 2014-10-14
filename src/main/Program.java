@@ -20,9 +20,10 @@ import java.util.Scanner;
  * Start point
  * TODO: Display settings. Font, size, tab width etc
  * TODO: Improved find. Go to next, previous, ignore case, regex
+ * TODO: Detect file changes via hashing on opening
  */
 public class Program {
-    public static final String VERSION = "1.8a";
+    public static final String VERSION = "1.8b";
     public static final String NAME = "AES Text Editor";
 
     public static void main(String args[]) {

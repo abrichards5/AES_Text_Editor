@@ -31,6 +31,7 @@ public class AppFrame extends JFrame {
 
     public AppFrame() {
         this.setSize(500, 500);
+        this.setMinimumSize(new Dimension(250,200));
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setTextWrap(false);

@@ -62,7 +62,7 @@ public class GUIModel extends BaseModel {
             status = "ERROR IN OPENING";
         }
 
-        updateView();
+        updateView(true);
         view.statusBar().setFilename(file.getAbsolutePath());
         view.setTitle(file.getName());
         view.statusBar().setStatus(status);
@@ -84,14 +84,17 @@ public class GUIModel extends BaseModel {
         view.statusBar().setStatus("SAVE SUCCESSFUL");
     }
 
-    //Push data from model to view
     private void updateView() {
+        updateView(false);
+    }
+    //Push data from model to view
+    private void updateView(boolean discardEdits) {
         if(getData().getMode().equals(FileStatus.TEXT_FILE)) {
-            view.getTextArea().setText(getData().text());
+            view.getTextArea().setText(getData().text(), discardEdits);
         }
         //Notifies change in underlying data
         else if(getData().getMode().equals(FileStatus.BINARY_FILE)) {
-            view.getTextArea().setText(view.getTextArea().getText());
+            view.getTextArea().setText(view.getTextArea().getText(), discardEdits);
         }
     }
     //Pull data from view to model
@@ -110,29 +113,32 @@ public class GUIModel extends BaseModel {
 
     public CryptStatus encrypt(String key) {
         updateModel();
-        String result = super.encrypt(key).toString();
-        if(getData().getMode().equals(FileStatus.BINARY_FILE)) {
-            view.setBinaryMode();
+        CryptStatus result = super.encrypt(key);
+        if(result.equals(CryptStatus.ENCRYPT_SUCCESS)) {
+            if (getData().getMode().equals(FileStatus.BINARY_FILE)) {
+                view.setBinaryMode();
+            } else {
+                view.setTextMode();
+            }
+            updateView();
         }
-        else {
-            view.setTextMode();
-        }
-        updateView();
-        view.statusBar().setStatus(result);
+        view.statusBar().setStatus(result.toString());
         return null;
     }
 
     public CryptStatus decrypt (String key) {
         updateModel();
-        String result = super.decrypt(key).toString();
-        if(getData().getMode().equals(FileStatus.BINARY_FILE)) {
-            view.setBinaryMode();
+        CryptStatus result = super.decrypt(key);
+        if(result.equals(CryptStatus.DECRYPT_SUCCESS)) {
+            if(getData().getMode().equals(FileStatus.BINARY_FILE)) {
+                view.setBinaryMode();
+            }
+            else {
+                view.setTextMode();
+            }
+            updateView();
         }
-        else {
-            view.setTextMode();
-        }
-        updateView();
-        view.statusBar().setStatus(result);
+        view.statusBar().setStatus(result.toString());
         return null;
     }
 

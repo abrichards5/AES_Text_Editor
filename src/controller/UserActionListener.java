@@ -108,21 +108,21 @@ public class UserActionListener implements ActionListener, DocumentListener, Win
     @Override
     public void insertUpdate(DocumentEvent e) {
         model.setModified();
-        view.statusBar().setStatus("");
+        view.statusBar().setStatus(model.modifiedStatus());
         view.getTextArea().removeHighlight();
     }
 
     @Override
     public void removeUpdate(DocumentEvent e) {
         model.setModified();
-        view.statusBar().setStatus("");
+        view.statusBar().setStatus(model.modifiedStatus());
         view.getTextArea().removeHighlight();
     }
 
     @Override
     public void changedUpdate(DocumentEvent e) {
         model.setModified();
-        view.statusBar().setStatus("");
+        view.statusBar().setStatus(model.modifiedStatus());
         view.getTextArea().removeHighlight();
     }
 
