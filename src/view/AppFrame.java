@@ -50,9 +50,10 @@ public class AppFrame extends JFrame {
     public DialogBuilder dialogs() {
         return dialogs;
     }
-    public void setListener(ActionListener al, DocumentListener dl, WindowListener wl, DropTargetListener dtl) throws TooManyListenersException {
+    public void setListener(ActionListener al, DocumentListener dl, WindowListener wl, DropTargetListener dtl, MouseWheelListener mwl) throws TooManyListenersException {
         menu.setListener(al);
         textArea.setListener(dl);
+        textArea.addMouseWheelListener(mwl);
         this.addWindowListener(wl);
         DropTarget dt = new DropTarget();
         dt.addDropTargetListener(dtl);

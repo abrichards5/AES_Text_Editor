@@ -31,6 +31,9 @@ class MenuBar extends JMenuBar {
     private final JMenu settings = new JMenu("Settings");
     private final JMenuItem wordWrap = new JMenuItem();
 
+    private final JMenuItem font = new JMenuItem("Font");
+
+
     private final JMenu encoding = new JMenu("Encoding");
     private final JMenuItem encBase64 = new JMenuItem("Base 64");
     private final JMenuItem encHex = new JMenuItem("Hex");
@@ -58,11 +61,14 @@ class MenuBar extends JMenuBar {
         this.add(crypto);
 
         settings.add(wordWrap);
-        this.add(settings);
-        settings.add(encoding);
+        settings.add(font);
+
         encoding.add(encBase64);
         encoding.add(encHex);
         encoding.add(encNone);
+        settings.add(encoding);
+
+        this.add(settings);
 
         this.add(help);
         help.add(about);
@@ -137,6 +143,10 @@ class MenuBar extends JMenuBar {
         wordWrap.setActionCommand("wordwrap");
         wordWrap.addActionListener(al);
         wordWrap.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, InputEvent.CTRL_DOWN_MASK));
+
+        font.setMnemonic('f');
+        font.setActionCommand("font");
+        font.addActionListener(al);
 
         encoding.setMnemonic('e');
 

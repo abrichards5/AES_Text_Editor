@@ -22,6 +22,13 @@ public class TextArea extends JTextArea {
     private final UndoManager undoMan = new UndoManager();
     private final Document thisDoc;
 
+    public static final Font DEFAULT_FONT = new Font(Font.MONOSPACED, Font.PLAIN, 12);
+    public static final int[] DEFAULT_FONT_SIZES =
+            {
+                    8, 9, 10, 11, 12, 14, 16, 18, 20,
+                    22, 24, 26, 28, 36, 48, 72,
+            };
+
     public TextArea() {
         thisDoc = this.getDocument();
         this.setDragEnabled(true);
@@ -31,8 +38,26 @@ public class TextArea extends JTextArea {
                 undoMan.addEdit(e.getEdit());
             }
         });
-        this.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
+        this.setFont(DEFAULT_FONT);
         this.setTabSize(4);
+    }
+    
+
+    public void increaseFontSize() {
+        for(int i = 0; i < DEFAULT_FONT_SIZES.length; i++){
+            if(DEFAULT_FONT_SIZES[i] > this.getFont().getSize()) {
+                this.setFont(new Font(this.getFont().getFamily(), this.getFont().getStyle(), DEFAULT_FONT_SIZES[i]));
+                return;
+            }
+        }
+    }
+    public void decreaseFontSize() {
+        for(int i = DEFAULT_FONT_SIZES.length -1; i >= 0; i--){
+            if(DEFAULT_FONT_SIZES[i] < this.getFont().getSize()) {
+                this.setFont(new Font(this.getFont().getFamily(), this.getFont().getStyle(), DEFAULT_FONT_SIZES[i]));
+                return;
+            }
+        }
     }
 
     public boolean undo() {

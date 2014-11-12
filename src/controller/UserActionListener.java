@@ -24,7 +24,7 @@ import java.util.TooManyListenersException;
  * the appropriate action.
  *
  */
-public class UserActionListener implements ActionListener, DocumentListener, WindowListener, DropTargetListener{
+public class UserActionListener implements ActionListener, DocumentListener, WindowListener, DropTargetListener, MouseWheelListener{
 
     private final AppFrame view;
     private final Functions model;
@@ -36,7 +36,7 @@ public class UserActionListener implements ActionListener, DocumentListener, Win
 
         // Adds itself as the listener for the view
         try {
-            view.setListener(this, this, this, this);
+            view.setListener(this, this, this, this, this);
         }
         catch (TooManyListenersException tmle) {
             //Shouldn't ever occur
@@ -93,6 +93,9 @@ public class UserActionListener implements ActionListener, DocumentListener, Win
                 break;
             case "encnone":
                 model.setEncoding(Encoding.NONE);
+                break;
+            case "font":
+                model.setFont();
                 break;
             case "about":
                 JOptionPane.showMessageDialog(view, "AES Text Editor\nVersion: "+ Program.VERSION, "Version", JOptionPane.INFORMATION_MESSAGE, view.ICON);
@@ -177,4 +180,15 @@ public class UserActionListener implements ActionListener, DocumentListener, Win
     @Override public void dragExit(DropTargetEvent dte) {}
 
 
+    @Override
+    public void mouseWheelMoved(MouseWheelEvent e) {
+        if(e.isControlDown()) {
+            if(e.getWheelRotation() < 0) {
+                view.getTextArea().increaseFontSize();
+            }
+            else {
+                view.getTextArea().decreaseFontSize();
+            }
+        }
+    }
 }

@@ -6,6 +6,7 @@ import model.enums.Encoding;
 import view.AppFrame;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -154,6 +155,13 @@ public class Functions {
             isModified = false;
         }
     }
+    public void setFont() {
+        Font f = view.dialogs().fontDialog();
+        if(f != null) {
+            view.getTextArea().setFont(f);
+        }
+    }
+
 
     public void setEncoding(Encoding e) {
         model.setEncoding(e);

@@ -13,9 +13,9 @@ class FileChooser extends JFileChooser {
     private final DialogBuilder dialogs;
 
     public FileChooser(DialogBuilder dialogs) {
+        super("./");
         this.dialogs = dialogs;
         this.addChoosableFileFilter(new CryptFileFilter());
-
     }
 
     @Override

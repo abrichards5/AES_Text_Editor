@@ -1,8 +1,10 @@
 package view;
 
 import controller.exception.InputCancelledException;
+import say.swing.JFontChooser;
 
 import javax.swing.*;
+import javax.xml.soap.Text;
 import java.awt.*;
 import java.io.File;
 
@@ -13,10 +15,10 @@ import java.io.File;
  *
  */
 public class DialogBuilder {
-    
+
     private final AppFrame af;
     private final FileChooser fileChooser = new FileChooser(this);
-    
+
     public DialogBuilder(AppFrame af) {
         this.af = af;
     }
@@ -66,7 +68,17 @@ public class DialogBuilder {
         return JOptionPane.showInputDialog(af,"Enter string to search for",
                 "Enter string", JOptionPane.PLAIN_MESSAGE);
     }
-
+    public Font fontDialog() {
+        JFontChooser jfc = new JFontChooser();
+        jfc.setSelectedFont(af.getTextArea().getFont());
+        int returnValue = jfc.showDialog(af);
+        if(returnValue == JFontChooser.OK_OPTION) {
+            return jfc.getSelectedFont();
+        } else if(returnValue == JFontChooser.DEFAULT_OPTION) {
+            return TextArea.DEFAULT_FONT;
+        }
+        return null;
+    }
 
     public File openFileDialog() {
         int status = fileChooser.showOpenDialog(af);
