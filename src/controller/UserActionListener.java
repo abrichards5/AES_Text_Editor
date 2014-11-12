@@ -98,7 +98,7 @@ public class UserActionListener implements ActionListener, DocumentListener, Win
                 model.setFont();
                 break;
             case "about":
-                JOptionPane.showMessageDialog(view, "AES Text Editor\nVersion: "+ Program.VERSION, "Version", JOptionPane.INFORMATION_MESSAGE, view.ICON);
+                JOptionPane.showMessageDialog(view, Program.NAME+"\nVersion: "+ Program.VERSION, "Version", JOptionPane.INFORMATION_MESSAGE, view.ICON);
                 break;
         }
     }

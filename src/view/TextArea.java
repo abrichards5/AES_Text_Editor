@@ -28,6 +28,7 @@ public class TextArea extends JTextArea {
                     8, 9, 10, 11, 12, 14, 16, 18, 20,
                     22, 24, 26, 28, 36, 48, 72,
             };
+    public static final int DEFAULT_TAB_SIZE = 4;
 
     public TextArea() {
         thisDoc = this.getDocument();
@@ -39,7 +40,7 @@ public class TextArea extends JTextArea {
             }
         });
         this.setFont(DEFAULT_FONT);
-        this.setTabSize(4);
+        this.setTabSize(DEFAULT_TAB_SIZE);
     }
     
 

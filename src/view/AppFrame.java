@@ -1,5 +1,7 @@
 package view;
 
+import main.Program;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.DocumentListener;
@@ -45,7 +47,7 @@ public class AppFrame extends JFrame {
         this.setVisible(true);
     }
     public void setTitle(String t) {
-        super.setTitle("AES Text Editor - " + t);
+        super.setTitle(Program.NAME+" - " + t);
     }
     public DialogBuilder dialogs() {
         return dialogs;
