@@ -102,4 +102,8 @@ public class DialogBuilder {
         }
         return null;
     }
+
+    public void errorDialog(String message) {
+        JOptionPane.showMessageDialog(af, message, "Error", JOptionPane.ERROR_MESSAGE);
+    }
 }

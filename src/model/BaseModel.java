@@ -19,7 +19,6 @@ public class BaseModel {
 
     private final Cryptographer aes;
     private final ByteData data = new ByteData();
-    private final long MAX_SIZE =  50000000L; //50mb
 
     public BaseModel(Cryptographer aes) {
         this.aes = aes;
@@ -41,12 +40,6 @@ public class BaseModel {
 
 
     public FileStatus openFile(File file) throws IOException {
-        long length = file.length();
-        // Check size
-        if(length > MAX_SIZE) {
-            return FileStatus.LARGE_FILE;
-        }
-
         FileInputStream fis = new FileInputStream(file);
         byte[] dataIn = new byte[(int)file.length()];
         fis.read(dataIn, 0, dataIn.length);

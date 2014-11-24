@@ -32,6 +32,7 @@ public class GUIModel extends BaseModel {
     }
 
     public void newFile() {
+        super.getData().set("");
         view.setTextMode();
         view.getTextArea().setText("");
         view.statusBar().setFilename("");
@@ -45,7 +46,11 @@ public class GUIModel extends BaseModel {
         } catch(IOException ioe) {
             view.statusBar().setStatus("OPEN FAILED");
             return FileStatus.ERROR;
+        } catch(OutOfMemoryError oome) {
+            view.dialogs().errorDialog("Out of Memory! File too large");
+            return FileStatus.ERROR;
         }
+
         String status = null;
         if(fc.equals(FileStatus.TEXT_FILE)) {
             view.setTextMode();
@@ -54,9 +59,6 @@ public class GUIModel extends BaseModel {
         else if(fc.equals(FileStatus.BINARY_FILE)) {
             view.setBinaryMode();
             status = "BINARY OPEN SUCCESSFUL";
-        }
-        else if(fc.equals(FileStatus.LARGE_FILE)) {
-            status = "FILE TOO LARGE";
         }
         else if(fc.equals(FileStatus.ERROR)) {
             status = "ERROR IN OPENING";
@@ -67,7 +69,7 @@ public class GUIModel extends BaseModel {
         view.setTitle(file.getName());
         view.statusBar().setStatus(status);
         view.statusBar().setEncoding(getEncoding().toString());
-        return FileStatus.ERROR;
+        return fc;
     }
 
     public void saveFile(File filename) {
@@ -113,7 +115,12 @@ public class GUIModel extends BaseModel {
 
     public CryptStatus encrypt(String key) {
         updateModel();
-        CryptStatus result = super.encrypt(key);
+        CryptStatus result = CryptStatus.ENCRYPT_FAILED;
+        try {
+            result = super.encrypt(key);
+        } catch (OutOfMemoryError oome) {
+            view.dialogs().errorDialog("Out of Memory! File too large");
+        }
         if(result.equals(CryptStatus.ENCRYPT_SUCCESS)) {
             if (getData().getMode().equals(FileStatus.BINARY_FILE)) {
                 view.setBinaryMode();
@@ -128,7 +135,12 @@ public class GUIModel extends BaseModel {
 
     public CryptStatus decrypt (String key) {
         updateModel();
-        CryptStatus result = super.decrypt(key);
+        CryptStatus result = CryptStatus.DECRYPT_FAILED;
+        try {
+            result = super.decrypt(key);
+        } catch (OutOfMemoryError oome) {
+            view.dialogs().errorDialog("Out of Memory! File too large");
+        }
         if(result.equals(CryptStatus.DECRYPT_SUCCESS)) {
             if(getData().getMode().equals(FileStatus.BINARY_FILE)) {
                 view.setBinaryMode();

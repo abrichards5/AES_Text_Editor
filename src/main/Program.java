@@ -26,13 +26,15 @@ public class Program {
     public static final String VERSION = "1.9.0";
     public static final String NAME = "AES Text Editor";
 
+    private static boolean verbose = false;
+
     public static void main(String args[]) {
         parseCLI(args);
     }
     private static void parseCLI(String[] args) {
         Options options = new Options();
         options.addOption("h", "help", false, "display this help");
-        options.addOption("v", "version", false, "display version");
+        options.addOption("version", false, "display version");
         options.addOption(OptionBuilder.withLongOpt("encrypt")
                 .withDescription("encrypt a file")
                 .hasArg()
@@ -58,6 +60,7 @@ public class Program {
                 .hasArg()
                 .withArgName("ENCODING")
                 .create("t"));
+        options.addOption("v", "verbose", false, "Print more details");
 
 
         CommandLineParser parser = new BasicParser();
@@ -66,6 +69,7 @@ public class Program {
             if (cmd.hasOption("help")) { usage(options, 0); }
             if (cmd.hasOption("version")) { System.out.println(NAME+" v"+VERSION); System.exit(0); }
 
+            if(cmd.hasOption("verbose")) { Program.verbose = true; }
             String outfile, infile, encoding = "default", password = null;
             if(cmd.hasOption("password")) { password = cmd.getOptionValue("password"); }
             if(cmd.hasOption("encoding")) { encoding = cmd.getOptionValue("encoding"); }
@@ -124,7 +128,15 @@ public class Program {
         BaseModel bm = new BaseModel(crypt);
         CryptStatus result = null;
 
-        bm.openFile(new File(in));
+        verbosePrint("Opening file: " + in);
+        try {
+            bm.openFile(new File(in));
+        }
+        catch (OutOfMemoryError oome) {
+            System.err.println("Error: Out Of Memory! File too large");
+            System.exit(1);
+        }
+
 
         Encoding enc = Encoding.toEnum(encoding);
         if(!encoding.equals("default")) {
@@ -132,6 +144,7 @@ public class Program {
                 throw new InvalidEncodingException("Invalid encoding: " + encoding);
             }
             else {
+                verbosePrint("Setting encoding to: "+enc.toString());
                 bm.setEncoding(enc);
             }
         }
@@ -150,15 +163,31 @@ public class Program {
             }
 
         }
-        if(encrypt) {
-            result = bm.encrypt(pass);
+        try {
+            if (encrypt) {
+                verbosePrint("Encrypting...");
+                result = bm.encrypt(pass);
+            } else {
+                verbosePrint("Decrypting...");
+                result = bm.decrypt(pass);
+            }
         }
-        else {
-            result = bm.decrypt(pass);
+        catch (OutOfMemoryError oome) {
+            System.err.println("Error: Out Of Memory! File too large");
+            System.exit(1);
         }
-        bm.saveFile(new File(out));
+        if(result.equals(CryptStatus.DECRYPT_SUCCESS) || result.equals(CryptStatus.ENCRYPT_SUCCESS)) {
+            verbosePrint("Saving to: "+out);
+            bm.saveFile(new File(out));
+        }
         System.out.println(result.toString());
 
+    }
+
+    private static void verbosePrint(String s) {
+        if(Program.verbose) {
+            System.out.println(s);
+        }
     }
 
     private static void startGUI() {

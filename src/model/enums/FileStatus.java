@@ -10,7 +10,6 @@ public enum FileStatus {
 
     BINARY_FILE("BINARY_FILE"),
     TEXT_FILE("TEXT_FILE"),
-    LARGE_FILE("LARGE_FILE"),
     ERROR("ERROR");
 
     private final String name;
@@ -33,9 +32,6 @@ public enum FileStatus {
         }
         else if (name.equals(FileStatus.TEXT_FILE.toString())) {
             return TEXT_FILE;
-        }
-        else if (name.equals(FileStatus.LARGE_FILE.toString())) {
-            return LARGE_FILE;
         }
         else if (name.equals(FileStatus.ERROR.toString())) {
             return ERROR;
