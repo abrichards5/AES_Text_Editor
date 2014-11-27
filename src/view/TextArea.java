@@ -30,6 +30,8 @@ public class TextArea extends JTextArea {
             };
     public static final int DEFAULT_TAB_SIZE = 4;
 
+    private String searchWord = "";
+
     public TextArea() {
         thisDoc = this.getDocument();
         this.setDragEnabled(true);
@@ -105,12 +107,14 @@ public class TextArea extends JTextArea {
     public int highlight(String searchWord) {
         removeHighlight();
         if(searchWord == null || searchWord.equals("")) {
+            this.searchWord = "";
             //Trying to highlight "" goes into an infinite loop and ends up using GBs of RAM
             return -1;
         }
         int offset = 0;
         int count = 0;
         String data = getText();
+        this.searchWord = searchWord;
 
         Highlighter.HighlightPainter painter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
         BoyerMooreHorspoolRaita bmhr = new BoyerMooreHorspoolRaita();
@@ -129,6 +133,16 @@ public class TextArea extends JTextArea {
         }
         return count;
 
+    }
+
+    public int findNext() {
+        if(searchWord == null || searchWord.length() == 0) {return -1;}
+        BoyerMooreHorspoolRaita bmhr = new BoyerMooreHorspoolRaita();
+        int offset = bmhr.searchString(getText(), this.getCaretPosition()+1, searchWord);
+        if(offset >= 0) {
+            this.setCaretPosition(offset);
+        }
+        return offset;
     }
 
 }

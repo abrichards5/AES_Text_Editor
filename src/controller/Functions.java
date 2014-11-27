@@ -39,6 +39,9 @@ public class Functions {
             view.statusBar().setStatus(modifiedStatus());
         }
     }
+    public void findNext() {
+        view.getTextArea().findNext();
+    }
     public String modifiedStatus() {
         return isModified ? "MODIFIED" : "";
     }

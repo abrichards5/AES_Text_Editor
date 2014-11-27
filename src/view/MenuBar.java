@@ -23,6 +23,8 @@ class MenuBar extends JMenuBar {
     private final JMenuItem undo = new JMenuItem("Undo");
     private final JMenuItem redo = new JMenuItem("Redo");
     private final JMenuItem find = new JMenuItem("Find");
+    private final JMenuItem findNext = new JMenuItem("Find Next");
+
 
     private final JMenu crypto = new JMenu("Crypto");
     private final JMenuItem encrypt = new JMenuItem("Encrypt");
@@ -54,6 +56,7 @@ class MenuBar extends JMenuBar {
         edit.add(undo);
         edit.add(redo);
         edit.add(find);
+        edit.add(findNext);
         this.add(edit);
 
         crypto.add(encrypt);
@@ -122,6 +125,11 @@ class MenuBar extends JMenuBar {
         find.setActionCommand("find");
         find.addActionListener(al);
         find.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.CTRL_DOWN_MASK));
+
+        findNext.setMnemonic('n');
+        findNext.setActionCommand("findnext");
+        findNext.addActionListener(al);
+        findNext.setAccelerator(KeyStroke.getKeyStroke("F3"));
 
         //CRYPTO
         crypto.setMnemonic('c');

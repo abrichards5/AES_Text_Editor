@@ -76,6 +76,9 @@ public class UserActionListener implements ActionListener, DocumentListener, Win
             case "find":
                 model.highlightString();
                 break;
+            case "findnext":
+                model.findNext();
+                break;
             case "encrypt":
                 model.encrypt();
                 break;
