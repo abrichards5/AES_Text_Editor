@@ -109,6 +109,7 @@ public class TextArea extends JTextArea {
     }
     public void removeHighlight() {
         getHighlighter().removeAllHighlights();
+        matches.clear();
     }
 
     // Uses http://johannburkard.de/software/stringsearch/
@@ -162,7 +163,6 @@ public class TextArea extends JTextArea {
 
     public int highlight(FindParams params) {
         removeHighlight();
-        matches.clear();
         if(params.word == null || params.word.length() == 0) {
             //Trying to highlight "" goes into an infinite loop and ends up using GBs of RAM
             return NULL_WORD;
