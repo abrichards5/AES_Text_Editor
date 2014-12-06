@@ -27,5 +27,6 @@ Sources
   * [StringSearch](http://johannburkard.de/software/stringsearch/)
   * [Apache Commons CLI](http://commons.apache.org/proper/commons-cli/index.html)
   * [FontChooser](http://jfontchooser.sourceforge.jp/site/jfontchooser/project-summary.html) : Slightly modified from source (Added a default button)
+  * [RequestFocusListener](http://tips4java.wordpress.com/2010/03/14/dialog-focus/)
     
   

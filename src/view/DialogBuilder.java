@@ -19,6 +19,8 @@ public class DialogBuilder {
     private final AppFrame af;
     private final FileChooser fileChooser = new FileChooser(this);
 
+    private static final int DEFAULT_INPUT_WIDTH = 34;
+
     public DialogBuilder(AppFrame af) {
         this.af = af;
     }
@@ -78,21 +80,26 @@ public class DialogBuilder {
         regexBox.setSelected(lastFindSettings.useRegex);
 
         JTextField stringBox = new JTextField(lastFindSettings.word);
-        stringBox.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
-        stringBox.setColumns(34);
+        stringBox.addAncestorListener( new RequestFocusListener() );
+
+        stringBox.setFont(TextArea.DEFAULT_FONT);
+        stringBox.setColumns(DEFAULT_INPUT_WIDTH);
 
         JPanel myPanel = new JPanel();
         myPanel.setLayout(new GridLayout(2,1));
+
         JPanel checkPanel = new JPanel();
         checkPanel.add(caseBox);
         checkPanel.add(Box.createHorizontalStrut(15)); // a spacer
         checkPanel.add(regexBox);
         myPanel.add(checkPanel);
+
         JPanel stringPanel = new JPanel();
         stringPanel.add(stringBox);
         myPanel.add(stringPanel);
 
         JOptionPane.showConfirmDialog(af, myPanel, "Find", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
         lastFindSettings = new FindParams(stringBox.getText(), caseBox.isSelected(), regexBox.isSelected());
         return lastFindSettings;
     }

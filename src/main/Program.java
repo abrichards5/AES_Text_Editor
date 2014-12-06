@@ -18,9 +18,6 @@ import java.util.Scanner;
  * Created by alutman on 17/03/14.
  *
  * Start point
- * TODO: Tab width setting
- * TODO: Improved find. Go to next, previous, ignore case, regex
- * TODO: Detect file changes via hashing on opening
  */
 public class Program {
     public static final String VERSION = "1.9.0";
