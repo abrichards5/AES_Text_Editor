@@ -1,5 +1,8 @@
 package view;
+import com.eaio.stringsearch.BNDMCI;
 import com.eaio.stringsearch.BoyerMooreHorspoolRaita;
+import view.data.FindParams;
+import view.data.Match;
 
 import javax.swing.*;
 import javax.swing.event.DocumentListener;
@@ -11,6 +14,8 @@ import javax.swing.text.Document;
 import javax.swing.text.Highlighter;
 import javax.swing.undo.UndoManager;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.regex.*;
 
 /*
  * Created by alutman on 17/03/14.
@@ -29,8 +34,12 @@ public class TextArea extends JTextArea {
                     22, 24, 26, 28, 36, 48, 72,
             };
     public static final int DEFAULT_TAB_SIZE = 4;
+    private static final Color HIGHLIGHT_COLOUR = Color.YELLOW;
 
-    private String searchWord = "";
+    public static final int NULL_WORD = -2;
+    public static final int INVALID_REGEX = -3;
+
+    private ArrayList<Match> matches = new ArrayList<>();
 
     public TextArea() {
         thisDoc = this.getDocument();
@@ -104,45 +113,71 @@ public class TextArea extends JTextArea {
 
     // Uses http://johannburkard.de/software/stringsearch/
     // to search the data. MUCH faster with large files
-    public int highlight(String searchWord) {
-        removeHighlight();
-        if(searchWord == null || searchWord.equals("")) {
-            this.searchWord = "";
-            //Trying to highlight "" goes into an infinite loop and ends up using GBs of RAM
-            return -1;
-        }
-        int offset = 0;
-        int count = 0;
-        String data = getText();
-        this.searchWord = searchWord;
+    private int highlightRegex(String regex, boolean caseSensitive) {
+        //Set up
+        //Find match; highlight
+        //while offset != end; find match; highlight
 
-        Highlighter.HighlightPainter painter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
+        Highlighter.HighlightPainter painter = new DefaultHighlighter.DefaultHighlightPainter(HIGHLIGHT_COLOUR);
+        Pattern p;
+        try {
+            p = Pattern.compile(regex, caseSensitive ? Pattern.UNICODE_CASE : Pattern.CASE_INSENSITIVE);
+        } catch(PatternSyntaxException pse) {
+            return INVALID_REGEX;
+        }
+
+        Matcher m = p.matcher(getText());
+
+        while (m.find()) {
+            try {
+                this.getHighlighter().addHighlight(m.start(), m.end(), painter);
+                matches.add(new Match(m.start(), m.end()));
+            }
+            catch(BadLocationException ble){ble.printStackTrace();}
+        }
+        return matches.size();
+    }
+    private int highlightNormal(String word, boolean caseSensitive) {
+        String data = this.getText();
+        int offset = 0;
+        Highlighter.HighlightPainter painter = new DefaultHighlighter.DefaultHighlightPainter(HIGHLIGHT_COLOUR);
         BoyerMooreHorspoolRaita bmhr = new BoyerMooreHorspoolRaita();
-        offset = bmhr.searchString(data, offset, searchWord);
+        BNDMCI bndmci = new BNDMCI();
+        offset = caseSensitive ? bmhr.searchString(data, offset, word) : bndmci.searchString(data, offset, word);
+
         if(offset >= 0) {
-            this.setCaretPosition(offset + searchWord.length());
+            this.setCaretPosition(offset + word.length());
             this.setCaretPosition(offset);
         }
         while(offset != -1) {
             try {
-                this.getHighlighter().addHighlight(offset, offset + searchWord.length(), painter);
-                offset = bmhr.searchString(data, offset+1, searchWord);
-                count++;
+                this.getHighlighter().addHighlight(offset, offset + word.length(), painter);
+                offset = caseSensitive ? bmhr.searchString(data, offset+1, word) : bndmci.searchString(data, offset+1, word);
+                matches.add(new Match(offset, offset+word.length()));
             }
             catch (BadLocationException ble) { ble.printStackTrace(); }
         }
-        return count;
+        return matches.size();
+    }
 
+    public int highlight(FindParams params) {
+        removeHighlight();
+        matches.clear();
+        if(params.word == null || params.word.length() == 0) {
+            //Trying to highlight "" goes into an infinite loop and ends up using GBs of RAM
+            return NULL_WORD;
+        }
+        return params.useRegex ? highlightRegex(params.word, params.caseSensitive) : highlightNormal(params.word, params.caseSensitive);
     }
 
     public int findNext() {
-        if(searchWord == null || searchWord.length() == 0) {return -1;}
-        BoyerMooreHorspoolRaita bmhr = new BoyerMooreHorspoolRaita();
-        int offset = bmhr.searchString(getText(), this.getCaretPosition()+1, searchWord);
-        if(offset >= 0) {
-            this.setCaretPosition(offset);
+        for(Match p : matches) {
+            if(p.start > this.getCaretPosition()) {
+                this.setCaretPosition(p.start);
+                return p.start;
+            }
         }
-        return offset;
+        return -1;
     }
 
 }

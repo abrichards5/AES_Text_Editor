@@ -2,9 +2,9 @@ package view;
 
 import controller.exception.InputCancelledException;
 import say.swing.JFontChooser;
+import view.data.FindParams;
 
 import javax.swing.*;
-import javax.xml.soap.Text;
 import java.awt.*;
 import java.io.File;
 
@@ -52,7 +52,12 @@ public class DialogBuilder {
         };
 
         pane.createDialog(af, title).setVisible(true);
-        int selected = Integer.parseInt(pane.getValue().toString());
+        int selected;
+        try {
+            selected = Integer.parseInt(pane.getValue().toString());
+        } catch (NullPointerException npe) {
+            throw new InputCancelledException();
+        }
 
         if (selected == JOptionPane.OK_OPTION) {
             return new String(pass.getPassword());
@@ -64,9 +69,32 @@ public class DialogBuilder {
         return null;
     }
 
-    public String highlightDialog() {
-        return JOptionPane.showInputDialog(af,"Enter string to search for",
-                "Enter string", JOptionPane.PLAIN_MESSAGE);
+    private FindParams lastFindSettings = new FindParams();
+
+    public FindParams advancedHighlightDialog() {
+        JCheckBox caseBox = new JCheckBox("Case sensitive");
+        caseBox.setSelected(lastFindSettings.caseSensitive);
+        JCheckBox regexBox = new JCheckBox("Use regex");
+        regexBox.setSelected(lastFindSettings.useRegex);
+
+        JTextField stringBox = new JTextField(lastFindSettings.word);
+        stringBox.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
+        stringBox.setColumns(34);
+
+        JPanel myPanel = new JPanel();
+        myPanel.setLayout(new GridLayout(2,1));
+        JPanel checkPanel = new JPanel();
+        checkPanel.add(caseBox);
+        checkPanel.add(Box.createHorizontalStrut(15)); // a spacer
+        checkPanel.add(regexBox);
+        myPanel.add(checkPanel);
+        JPanel stringPanel = new JPanel();
+        stringPanel.add(stringBox);
+        myPanel.add(stringPanel);
+
+        JOptionPane.showConfirmDialog(af, myPanel, "Find", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        lastFindSettings = new FindParams(stringBox.getText(), caseBox.isSelected(), regexBox.isSelected());
+        return lastFindSettings;
     }
     public Font fontDialog() {
         JFontChooser jfc = new JFontChooser();

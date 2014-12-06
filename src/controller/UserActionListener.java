@@ -50,7 +50,7 @@ public class UserActionListener implements ActionListener, DocumentListener, Win
     // ActionListener: Listens to menu buttons
     @Override
     public void actionPerformed(ActionEvent e) {
-        view.statusBar().setStatus("");
+//        view.statusBar().setStatus("");
         switch(e.getActionCommand()) {
             case "new":
                 model.newFile();
@@ -74,7 +74,7 @@ public class UserActionListener implements ActionListener, DocumentListener, Win
                 model.redo();
                 break;
             case "find":
-                model.highlightString();
+                model.find();
                 break;
             case "findnext":
                 model.findNext();
@@ -192,6 +192,10 @@ public class UserActionListener implements ActionListener, DocumentListener, Win
             else {
                 view.getTextArea().decreaseFontSize();
             }
+        }
+        else {
+            //Pass the event on to be handled normally in the scroll pane
+            view.getScrollPane().dispatchEvent(e);
         }
     }
 }

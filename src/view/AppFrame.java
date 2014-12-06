@@ -82,6 +82,7 @@ public class AppFrame extends JFrame {
     public TextArea getTextArea() {
         return textArea;
     }
+    public JScrollPane getScrollPane() { return textScroll; }
     public StatusBar statusBar() {
         return statusBar;
     }

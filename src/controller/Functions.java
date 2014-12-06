@@ -1,16 +1,14 @@
 package controller;
 
-import com.sun.org.apache.xerces.internal.impl.dv.util.HexBin;
 import controller.exception.InputCancelledException;
 import model.enums.Encoding;
 import view.AppFrame;
+import view.data.FindParams;
+import view.TextArea;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
 
 /**
  * Created by alutman on 17/03/14.
@@ -29,16 +27,25 @@ public class Functions {
         this.model = model;
     }
 
-    public void highlightString() {
-        String word = view.dialogs().highlightDialog();
-        int count = view.getTextArea().highlight(word);
-        if(count >= 0) {
+    public void find() {
+        newFind();
+    }
+
+    private void newFind() {
+        FindParams params = view.dialogs().advancedHighlightDialog();
+        int count = view.getTextArea().highlight(params);
+        if (count >= 0) {
             view.statusBar().setStatus(count + " matches");
+        }
+        else if(count == TextArea.INVALID_REGEX) {
+            view.statusBar().setStatus("INVALID REGEX");
         }
         else {
             view.statusBar().setStatus(modifiedStatus());
         }
+
     }
+
     public void findNext() {
         view.getTextArea().findNext();
     }
@@ -59,6 +66,7 @@ public class Functions {
     public void undo() {
         if(!view.getTextArea().undo()) {
             isModified = false;
+            view.statusBar().setStatus("");
         }
     }
 
