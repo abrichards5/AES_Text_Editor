@@ -28,11 +28,8 @@ public class Functions {
     }
 
     public void find() {
-        newFind();
-    }
-
-    private void newFind() {
         FindParams params = view.dialogs().advancedHighlightDialog();
+        if(params == null) { return; }
         int count = view.getTextArea().highlight(params);
         if (count >= 0) {
             view.statusBar().setStatus(count + " matches");
