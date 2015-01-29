@@ -1,4 +1,4 @@
-package model;
+package al.aesencryptor;
 
 import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
@@ -31,7 +31,6 @@ public class CBCCryptographer implements Cryptographer{
     public CBCCryptographer() {
         try {
             cipher = Cipher.getInstance(CIPHER_ALGORITHM);
-            System.out.println("Using: "+CIPHER_ALGORITHM+", with hash: "+HASH_ALGORITHM+". Salted");
         }
         catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
             //Hardcoded algorithm shouldn't ever throw this

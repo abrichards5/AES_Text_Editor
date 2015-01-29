@@ -1,9 +1,9 @@
-package model;
+package al.aesencryptor;
 
-import model.enums.CryptStatus;
-import model.enums.Encoding;
-import model.enums.FileStatus;
-import model.exception.InvalidEncryptionException;
+import al.aesencryptor.enums.Encoding;
+import al.aesencryptor.enums.FileStatus;
+import al.aesencryptor.exception.InvalidEncryptionException;
+import al.aesencryptor.enums.CryptStatus;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -15,21 +15,32 @@ import java.io.*;
  * Base model functionality
  *
  */
-public class BaseModel {
+public class CryptographerHandler {
 
     private final Cryptographer aes;
     private final ByteData data = new ByteData();
 
-    public BaseModel(Cryptographer aes) {
+    public CryptographerHandler(Cryptographer aes) {
         this.aes = aes;
     }
-    protected String getCurrentCryptoMode() {
+    public String getCryptoMode() {
         return aes.getMode();
     }
 
-    public ByteData getData() {
-        return data;
+    public FileStatus getDataMode() {
+        return data.getMode();
     }
+
+    public String getText() {
+        return data.text();
+    }
+    public void setText(String text) {
+        data.set(text);
+    }
+    public void setData(byte[] bytes) {
+        data.set(bytes);
+    }
+
     public Encoding getEncoding() {
         return data.encodingMode;
 

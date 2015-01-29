@@ -1,7 +1,14 @@
-import com.sun.org.apache.xml.internal.security.utils.Base64;
-import model.CBCCryptographer;
-import model.Cryptographer;
+package al.aesencryptor;
 
+import com.sun.org.apache.xml.internal.security.exceptions.Base64DecodingException;
+import com.sun.org.apache.xml.internal.security.utils.Base64;
+import al.aesencryptor.CBCCryptographer;
+import al.aesencryptor.Cryptographer;
+import junit.framework.TestCase;
+import org.junit.Test;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
 import java.security.SecureRandom;
 
 /**
@@ -10,27 +17,10 @@ import java.security.SecureRandom;
  * Tests encryption tool by comparing data before and after an encrypt/decrypt cycle
  *
  */
-public class EncryptDecryptTest {
+public class CBCCryptographerTest {
 
-    public static void main (String args[]) throws Exception{
-
-        if(testBytes()) {
-            System.out.println("FAILURE: CBCCryptographer.testBytes(): Data decrypt mismatch");
-        }
-        else {
-            System.out.println("SUCCESS: CBCCryptographer.testBytes(): Test successful");
-        }
-
-        if(testStrings()) {
-            System.out.println("FAILURE: CBCCryptographer.testStrings(): Data decrypt mismatch");
-        }
-        else {
-            System.out.println("SUCCESS: CBCCryptographer.testStrings(): Test successful");
-        }
-
-    }
-
-    private static boolean testBytes() throws Exception{
+    @Test
+    public void should_produce_identical_byte_data_after_encrypt_and_decrypt() throws BadPaddingException, IllegalBlockSizeException {
         SecureRandom sr = new SecureRandom();
         byte[] b = new byte[16];
         byte[] b2 = new byte[200];
@@ -43,24 +33,25 @@ public class EncryptDecryptTest {
         Cryptographer aes = new CBCCryptographer();
         byte[] encryptedData = aes.encrypt(key, data);
         byte[] decryptedData = aes.decrypt(key, encryptedData);
-        return compare(encryptedData, decryptedData);
+
+        assert compare(data, decryptedData);
 
     }
 
-    private static boolean testStrings() throws Exception {
+    @Test
+    public void should_produce_identical_string_data_after_encrypt_and_decrypt() throws Base64DecodingException, BadPaddingException, IllegalBlockSizeException {
         SecureRandom sr = new SecureRandom();
         byte[] b = new byte[16];
-        byte[] b2 = new byte[200];
         sr.nextBytes(b);
-        sr.nextBytes(b2);
 
         byte[] key = b;
-        byte[] data = b2;
+        byte[] data = this.getClass().toString().getBytes();
 
         Cryptographer aes = new CBCCryptographer();
         String encryptedData = Base64.encode(aes.encrypt(key, data));
         String decryptedData = new String(aes.decrypt(key, Base64.decode(encryptedData)));
-        return encryptedData.equals(decryptedData);
+
+        assert new String(data).equals(decryptedData);
     }
 
     private static boolean compare(byte[] a, byte[] b) {

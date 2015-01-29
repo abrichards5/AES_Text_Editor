@@ -1,10 +1,10 @@
 package controller;
 
-import model.BaseModel;
-import model.Cryptographer;
-import model.enums.CryptStatus;
-import model.enums.Encoding;
-import model.enums.FileStatus;
+import al.aesencryptor.CryptographerHandler;
+import al.aesencryptor.enums.Encoding;
+import al.aesencryptor.enums.FileStatus;
+import al.aesencryptor.Cryptographer;
+import al.aesencryptor.enums.CryptStatus;
 import view.AppFrame;
 
 import java.io.*;
@@ -15,24 +15,24 @@ import java.io.*;
  * Extends the BaseModel class for integration with GUI
  *
  */
-public class GUIModel extends BaseModel {
+public class GUIHandler extends CryptographerHandler {
 
     private final AppFrame view;
 
-    public GUIModel(AppFrame af, Cryptographer aes) {
+    public GUIHandler(AppFrame af, Cryptographer aes) {
         super(aes);
         view = af;
         cryptoUpdateGUI();
     }
 
     private void cryptoUpdateGUI() {
-        String curMode = getCurrentCryptoMode();
+        String curMode = getCryptoMode();
         view.statusBar().setMode(curMode);
         view.statusBar().setEncoding(getEncoding().toString());
     }
 
     public void newFile() {
-        super.getData().set("");
+        super.setText("");
         view.setTextMode();
         view.getTextArea().setText("");
         view.statusBar().setFilename("");
@@ -91,18 +91,18 @@ public class GUIModel extends BaseModel {
     }
     //Push data from model to view
     private void updateView(boolean discardEdits) {
-        if(getData().getMode().equals(FileStatus.TEXT_FILE)) {
-            view.getTextArea().setText(getData().text(), discardEdits);
+        if(getDataMode().equals(FileStatus.TEXT_FILE)) {
+            view.getTextArea().setText(getText(), discardEdits);
         }
         //Notifies change in underlying data
-        else if(getData().getMode().equals(FileStatus.BINARY_FILE)) {
+        else if(getDataMode().equals(FileStatus.BINARY_FILE)) {
             view.getTextArea().setText(view.getTextArea().getText(), discardEdits);
         }
     }
     //Pull data from view to model
     private void updateModel() {
-        if(getData().getMode().equals(FileStatus.TEXT_FILE)) {
-            getData().set(view.getTextArea().getText());
+        if(getDataMode().equals(FileStatus.TEXT_FILE)) {
+            setText(view.getTextArea().getText());
         }
     }
 
@@ -122,7 +122,7 @@ public class GUIModel extends BaseModel {
             view.dialogs().errorDialog("Out of Memory! File too large");
         }
         if(result.equals(CryptStatus.ENCRYPT_SUCCESS)) {
-            if (getData().getMode().equals(FileStatus.BINARY_FILE)) {
+            if (getDataMode().equals(FileStatus.BINARY_FILE)) {
                 view.setBinaryMode();
             } else {
                 view.setTextMode();
@@ -142,7 +142,7 @@ public class GUIModel extends BaseModel {
             view.dialogs().errorDialog("Out of Memory! File too large");
         }
         if(result.equals(CryptStatus.DECRYPT_SUCCESS)) {
-            if(getData().getMode().equals(FileStatus.BINARY_FILE)) {
+            if(getDataMode().equals(FileStatus.BINARY_FILE)) {
                 view.setBinaryMode();
             }
             else {

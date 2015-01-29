@@ -2,15 +2,12 @@ package view;
 
 import main.Program;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetListener;
 import java.awt.event.*;
-import java.io.File;
-import java.io.IOException;
 import java.util.TooManyListenersException;
 
 /**
@@ -21,8 +18,8 @@ import java.util.TooManyListenersException;
  */
 public class AppFrame extends JFrame {
 
-    private final MenuBar menu = new MenuBar();
-    private final TextArea textArea = new TextArea();
+    private final view.MenuBar menu = new view.MenuBar();
+    private final view.TextArea textArea = new view.TextArea();
     private final JScrollPane textScroll = new JScrollPane(textArea);
     private final DialogBuilder dialogs = new DialogBuilder(this);
 
@@ -79,7 +76,7 @@ public class AppFrame extends JFrame {
         }
         textArea.setTextWrap(b);
     }
-    public TextArea getTextArea() {
+    public view.TextArea getTextArea() {
         return textArea;
     }
     public JScrollPane getScrollPane() { return textScroll; }

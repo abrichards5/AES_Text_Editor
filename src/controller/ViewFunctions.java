@@ -1,9 +1,9 @@
 package controller;
 
-import controller.exception.InputCancelledException;
-import model.enums.Encoding;
-import view.AppFrame;
+import al.aesencryptor.enums.Encoding;
 import view.data.FindParams;
+import controller.exception.InputCancelledException;
+import view.AppFrame;
 import view.TextArea;
 
 import javax.swing.*;
@@ -16,13 +16,13 @@ import java.io.File;
  * Contains all the actions a user can perform.
  *
  */
-public class Functions {
+public class ViewFunctions {
     
     private final AppFrame view;
-    private final GUIModel model;
+    private final GUIHandler model;
     private boolean isModified = false;
 
-    public Functions(AppFrame view, GUIModel model) {
+    public ViewFunctions(AppFrame view, GUIHandler model) {
         this.view = view;
         this.model = model;
     }

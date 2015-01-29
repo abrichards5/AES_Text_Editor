@@ -1,8 +1,8 @@
 package view;
 
+import view.data.FindParams;
 import controller.exception.InputCancelledException;
 import say.swing.JFontChooser;
-import view.data.FindParams;
 
 import javax.swing.*;
 import java.awt.*;
@@ -82,7 +82,7 @@ public class DialogBuilder {
         JTextField stringBox = new JTextField(lastFindSettings.word);
         stringBox.addAncestorListener( new RequestFocusListener() );
 
-        stringBox.setFont(TextArea.DEFAULT_FONT);
+        stringBox.setFont(view.TextArea.DEFAULT_FONT);
         stringBox.setColumns(DEFAULT_INPUT_WIDTH);
 
         JPanel myPanel = new JPanel();
@@ -115,7 +115,7 @@ public class DialogBuilder {
         if(returnValue == JFontChooser.OK_OPTION) {
             return jfc.getSelectedFont();
         } else if(returnValue == JFontChooser.DEFAULT_OPTION) {
-            return TextArea.DEFAULT_FONT;
+            return view.TextArea.DEFAULT_FONT;
         }
         return null;
     }

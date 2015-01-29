@@ -1,7 +1,7 @@
 package view;
+import view.data.FindParams;
 import com.eaio.stringsearch.BNDMCI;
 import com.eaio.stringsearch.BoyerMooreHorspoolRaita;
-import view.data.FindParams;
 import view.data.Match;
 
 import javax.swing.*;

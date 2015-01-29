@@ -1,8 +1,8 @@
 package controller;
 
-import main.Program;
-import model.enums.Encoding;
+import al.aesencryptor.enums.Encoding;
 import view.AppFrame;
+import main.Program;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -27,10 +27,10 @@ import java.util.TooManyListenersException;
 public class UserActionListener implements ActionListener, DocumentListener, WindowListener, DropTargetListener, MouseWheelListener{
 
     private final AppFrame view;
-    private final Functions model;
+    private final ViewFunctions model;
 
 
-    public UserActionListener(AppFrame appFrame, Functions model) {
+    public UserActionListener(AppFrame appFrame, ViewFunctions model) {
         view = appFrame;
         this.model = model;
 

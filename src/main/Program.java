@@ -1,14 +1,16 @@
 package main;
 
-import controller.GUIModel;
+import controller.GUIHandler;
 import controller.UserActionListener;
-import controller.Functions;
-import model.*;
-import model.enums.CryptStatus;
-import model.enums.Encoding;
-import model.exception.InvalidEncodingException;
-import org.apache.commons.cli.ParseException;
+import controller.ViewFunctions;
+import al.aesencryptor.CBCCryptographer;
+import al.aesencryptor.Cryptographer;
+import al.aesencryptor.CryptographerHandler;
+import al.aesencryptor.enums.Encoding;
+import al.aesencryptor.exception.InvalidEncodingException;
 import view.AppFrame;
+import al.aesencryptor.enums.CryptStatus;
+import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.*;
 
 import java.io.*;
@@ -20,7 +22,7 @@ import java.util.Scanner;
  * Start point
  */
 public class Program {
-    public static final String VERSION = "1.9.0";
+    public static final String VERSION = "1.9.1";
     public static final String NAME = "AES Text Editor";
 
     private static boolean verbose = false;
@@ -103,8 +105,10 @@ public class Program {
             usage(options, 1);
         } catch (IOException e) {
             System.out.println("Problem opening file: "+e.getMessage());
+            System.exit(1);
         } catch (InvalidEncodingException e) {
             System.out.println(e.getMessage());
+            System.exit(1);
         }
 
     }
@@ -122,7 +126,8 @@ public class Program {
 
     private static void doCrypt(String in, String out, String pass, boolean encrypt, String encoding) throws IOException, InvalidEncodingException {
         Cryptographer crypt = new CBCCryptographer();
-        BaseModel bm = new BaseModel(crypt);
+        CryptographerHandler bm = new CryptographerHandler(crypt);
+        verbosePrint("Using "+bm.getCryptoMode());
         CryptStatus result = null;
 
         verbosePrint("Opening file: " + in);
@@ -190,8 +195,8 @@ public class Program {
     private static void startGUI() {
         Cryptographer crypt = new CBCCryptographer();
         AppFrame app = new AppFrame();
-        GUIModel mc = new GUIModel(app, crypt);
-        Functions f = new Functions(app, mc);
+        GUIHandler mc = new GUIHandler(app, crypt);
+        ViewFunctions f = new ViewFunctions(app, mc);
         new UserActionListener(app, f);
     }
 }
