@@ -98,6 +98,8 @@ public class DialogBuilder {
         stringPanel.add(stringBox);
         myPanel.add(stringPanel);
 
+        stringBox.selectAll();
+
         int option = JOptionPane.showConfirmDialog(af, myPanel, "Find", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
         if(option == JOptionPane.OK_OPTION) {
             lastFindSettings = new FindParams(stringBox.getText(), caseBox.isSelected(), regexBox.isSelected());

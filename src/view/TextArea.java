@@ -129,8 +129,14 @@ public class TextArea extends JTextArea {
 
         Matcher m = p.matcher(getText());
 
+        boolean first = true;
         while (m.find()) {
             try {
+                if(first) {
+                    this.setCaretPosition(m.start() + (m.end()-m.start()));
+                    this.setCaretPosition(m.start());
+                    first = false;
+                }
                 this.getHighlighter().addHighlight(m.start(), m.end(), painter);
                 matches.add(new Match(m.start(), m.end()));
             }
@@ -144,17 +150,20 @@ public class TextArea extends JTextArea {
         Highlighter.HighlightPainter painter = new DefaultHighlighter.DefaultHighlightPainter(HIGHLIGHT_COLOUR);
         BoyerMooreHorspoolRaita bmhr = new BoyerMooreHorspoolRaita();
         BNDMCI bndmci = new BNDMCI();
-        offset = caseSensitive ? bmhr.searchString(data, offset, word) : bndmci.searchString(data, offset, word);
 
-        if(offset >= 0) {
-            this.setCaretPosition(offset + word.length());
-            this.setCaretPosition(offset);
-        }
+        boolean first = true;
+        offset = caseSensitive ? bmhr.searchString(data, offset, word) : bndmci.searchString(data, offset, word);
         while(offset != -1) {
             try {
+                if(first) {
+                    this.setCaretPosition(offset + word.length());
+                    this.setCaretPosition(offset);
+                    first = false;
+                }
+                matches.add(new Match(offset, offset+word.length()));
                 this.getHighlighter().addHighlight(offset, offset + word.length(), painter);
                 offset = caseSensitive ? bmhr.searchString(data, offset+1, word) : bndmci.searchString(data, offset+1, word);
-                matches.add(new Match(offset, offset+word.length()));
+
             }
             catch (BadLocationException ble) { ble.printStackTrace(); }
         }
@@ -171,11 +180,16 @@ public class TextArea extends JTextArea {
     }
 
     public int findNext() {
-        for(Match p : matches) {
+        for(int i = 0; i < matches.size(); i++) {
+            Match p = matches.get(i);
             if(p.start > this.getCaretPosition()) {
                 this.setCaretPosition(p.start);
                 return p.start;
             }
+        }
+        if(matches.size() > 0) {
+            this.setCaretPosition(matches.get(0).start);
+            return matches.get(0).start;
         }
         return -1;
     }
