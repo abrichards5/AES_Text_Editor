@@ -89,17 +89,17 @@ public class StatusBar extends JPanel implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
         if(fileName.getText().length() > 1) {
             setStatus("COPIED", true);
             StringSelection s = new StringSelection(getFilename());
             Clipboard c = Toolkit.getDefaultToolkit().getSystemClipboard();
             c.setContents(s, s);
         }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
     }
 
     @Override
