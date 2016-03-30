@@ -116,23 +116,17 @@ public class UserActionListener implements ActionListener, DocumentListener, Win
     // DocumentListener: Used only to detect changes in the text
     @Override
     public void insertUpdate(DocumentEvent e) {
-        model.setModified();
-        view.statusBar().setStatus(model.modifiedStatus());
-        view.getTextArea().removeHighlight();
+        model.setModified(true);
     }
 
     @Override
     public void removeUpdate(DocumentEvent e) {
-        model.setModified();
-        view.statusBar().setStatus(model.modifiedStatus());
-        view.getTextArea().removeHighlight();
+        model.setModified(true);
     }
 
     @Override
     public void changedUpdate(DocumentEvent e) {
-        model.setModified();
-        view.statusBar().setStatus(model.modifiedStatus());
-        view.getTextArea().removeHighlight();
+        model.setModified(true);
     }
 
     // WindowListener: Only needed for exit method

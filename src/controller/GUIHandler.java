@@ -36,7 +36,7 @@ public class GUIHandler extends CryptographerHandler {
         view.setTextMode();
         view.getTextArea().setText("");
         view.statusBar().setFilename("");
-        view.setTitle("");
+        view.setTitleFilename("");
     }
 
     public FileStatus openFile(File file) {
@@ -66,7 +66,7 @@ public class GUIHandler extends CryptographerHandler {
 
         updateView(true);
         view.statusBar().setFilename(file.getAbsolutePath());
-        view.setTitle(file.getName());
+        view.setTitleFilename(file.getName());
         view.statusBar().setStatus(status);
         view.statusBar().setEncoding(getEncoding().toString());
         return fc;
@@ -82,7 +82,7 @@ public class GUIHandler extends CryptographerHandler {
         }
 
         view.statusBar().setFilename(filename.getAbsolutePath());
-        view.setTitle(filename.getName());
+        view.setTitleFilename(filename.getName());
         view.statusBar().setStatus("SAVE SUCCESSFUL");
     }
 

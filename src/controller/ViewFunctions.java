@@ -37,21 +37,26 @@ public class ViewFunctions {
         else if(count == TextArea.INVALID_REGEX) {
             view.statusBar().setStatus("INVALID REGEX");
         }
-        else {
-            view.statusBar().setStatus(modifiedStatus());
-        }
 
     }
 
     public void findNext() {
         view.getTextArea().findNext();
     }
-    public String modifiedStatus() {
-        return isModified ? "MODIFIED" : "";
+
+    public void setModified(boolean value) {
+        isModified = value;
+        if(isModified) {
+            view.setTitleModified(true);
+//            view.statusBar().setStatus(isModified ? "MODIFIED" : "");
+            view.getTextArea().removeHighlight();
+            view.statusBar().setStatus("");
+        }
+        else {
+            view.setTitleModified(false);
+        }
     }
-    public void setModified() {
-        isModified = true;
-    }
+
     public void switchWordWrap() {
         if(view.getTextArea().getTextWrap()) {
             view.setTextWrap(false);
@@ -62,8 +67,7 @@ public class ViewFunctions {
     }
     public void undo() {
         if(!view.getTextArea().undo()) {
-            isModified = false;
-            view.statusBar().setStatus("");
+//            setModified(false);
         }
     }
 
@@ -124,7 +128,7 @@ public class ViewFunctions {
         // Automatically save as the current filename if it exists, otherwise ask for a filename
         if(view.statusBar().hasFilename()) {
             model.saveFile(new File(view.statusBar().getFilename()));
-            isModified = false;
+            setModified(false);
             return true;
         }
         return saveAs();
@@ -136,7 +140,7 @@ public class ViewFunctions {
         // Check file has been set
         if(file != null) {
             model.saveFile(file);
-            isModified = false;
+            setModified(false);
             return true;
         }
         else {
@@ -146,7 +150,7 @@ public class ViewFunctions {
     public void newFile() {
         if(checkSaved()) {
             model.newFile();
-            isModified = false;
+            setModified(false);
         }
     }
     public void open() {
@@ -155,7 +159,7 @@ public class ViewFunctions {
             file = view.dialogs().openFileDialog();
             if(file != null) {
                 model.openFile(file);
-                isModified = false;
+                setModified(false);
             }
 
 
@@ -165,7 +169,7 @@ public class ViewFunctions {
         if(checkSaved()) {
             model.openFile(f);
             view.dialogs().setFileDialogDirectory(f);
-            isModified = false;
+            setModified(false);
         }
     }
     public void setFont() {

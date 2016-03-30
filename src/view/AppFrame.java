@@ -34,7 +34,7 @@ public class AppFrame extends JFrame {
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setTextWrap(false);
-        setTitle("");
+        setTitleFilename("");
         makeLayout();
 
         ICON = new ImageIcon(getClass().getClassLoader().getResource("image/encrypted-icon-64.png"));
@@ -43,8 +43,26 @@ public class AppFrame extends JFrame {
         this.setEnabled(true);
         this.setVisible(true);
     }
-    public void setTitle(String t) {
-        super.setTitle(Program.NAME+" - " + t);
+
+    String filename = "untitled";
+
+    public void setTitleFilename(String filename) {
+        if(filename == null || filename.length() <= 0) {
+            this.filename = "untitled";
+        }
+        else {
+            this.filename = filename;
+        }
+        super.setTitle(this.filename+" - "+ Program.NAME);
+    }
+    public void setTitleModified(boolean b) {
+        if(b) {
+            super.setTitle(filename+" * - "+Program.NAME);
+        }
+        else {
+            super.setTitle(filename+" - "+Program.NAME);
+        }
+
     }
     public DialogBuilder dialogs() {
         return dialogs;
