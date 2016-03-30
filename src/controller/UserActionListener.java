@@ -159,7 +159,7 @@ public class UserActionListener implements ActionListener, DocumentListener, Win
         catch (UnsupportedFlavorException nfe) {
             //System.err.println("UserActionListener.drop() : UnsupportedFlavorException");
             //System.exit(1);
-            view.statusBar().setStatus("INVALID FILE");
+            view.statusBar().setStatus("INVALID FILE", false);
 
         }
         catch (NullPointerException npe) {

@@ -33,10 +33,10 @@ public class ViewFunctions {
         if(params == null) { return; }
         int count = view.getTextArea().highlight(params);
         if (count >= 0) {
-            view.statusBar().setStatus(count + " matches");
+            view.statusBar().setStatus(count + " matches", true);
         }
         else if(count == TextArea.INVALID_REGEX) {
-            view.statusBar().setStatus("INVALID REGEX");
+            view.statusBar().setStatus("INVALID REGEX", false);
         }
 
     }
@@ -162,7 +162,7 @@ public class ViewFunctions {
             }
         }
         else {
-            view.statusBar().setStatus("NO FILE TO REOPEN");
+            view.statusBar().setStatus("NO FILE TO REOPEN", false);
         }
 
     }

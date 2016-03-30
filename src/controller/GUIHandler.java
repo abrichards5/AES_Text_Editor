@@ -61,32 +61,35 @@ public class GUIHandler extends CryptographerHandler {
         try {
             fc = super.openFile(file);
         } catch(IOException ioe) {
-            view.statusBar().setStatus("OPEN FAILED");
+            view.statusBar().setStatus("OPEN FAILED", false);
             return FileStatus.ERROR;
         } catch(OutOfMemoryError oome) {
             view.dialogs().errorDialog("Out of Memory! File too large");
             return FileStatus.ERROR;
         }
-
+        boolean success = false;
         String status = null;
         if(fc.equals(FileStatus.TEXT_FILE)) {
             view.setTextMode();
             status = "OPEN SUCCESSFUL";
             currentFile = file;
+            success = true;
         }
         else if(fc.equals(FileStatus.BINARY_FILE)) {
             view.setBinaryMode();
             status = "BINARY OPEN SUCCESSFUL";
             currentFile = file;
+            success = true;
         }
         else if(fc.equals(FileStatus.ERROR)) {
             status = "ERROR IN OPENING";
+            success = false;
         }
 
         updateView(true);
         view.statusBar().setFilename(file.getAbsolutePath());
         view.setTitleFilename(file.getName());
-        view.statusBar().setStatus(status);
+        view.statusBar().setStatus(status, success);
         view.statusBar().setEncoding(getEncoding().toString());
         return fc;
     }
@@ -96,13 +99,13 @@ public class GUIHandler extends CryptographerHandler {
         try {
             super.saveFile(file);
         } catch(IOException ioe) {
-            view.statusBar().setStatus("SAVE FAILED");
+            view.statusBar().setStatus("SAVE FAILED", false);
             return;
         }
 
         view.statusBar().setFilename(file.getAbsolutePath());
         view.setTitleFilename(file.getName());
-        view.statusBar().setStatus("SAVE SUCCESSFUL");
+        view.statusBar().setStatus("SAVE SUCCESSFUL", true);
         currentFile = file;
     }
 
@@ -148,8 +151,12 @@ public class GUIHandler extends CryptographerHandler {
                 view.setTextMode();
             }
             updateView();
+            view.statusBar().setStatus(result.toString(), true);
         }
-        view.statusBar().setStatus(result.toString());
+        else {
+            view.statusBar().setStatus(result.toString(), false);
+        }
+
         return null;
     }
 
@@ -169,8 +176,12 @@ public class GUIHandler extends CryptographerHandler {
                 view.setTextMode();
             }
             updateView();
+            view.statusBar().setStatus(result.toString(), true);
         }
-        view.statusBar().setStatus(result.toString());
+        else {
+            view.statusBar().setStatus(result.toString(), false);
+        }
+
         return null;
     }
 
