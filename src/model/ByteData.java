@@ -1,11 +1,11 @@
-package al.aesencryptor;
+package model;
 
-import al.aesencryptor.enums.FileStatus;
-import al.aesencryptor.exception.InvalidEncryptionException;
+import model.enums.FileStatus;
+import model.exception.InvalidEncryptionException;
 import com.sun.org.apache.xerces.internal.impl.dv.util.HexBin;
 import com.sun.org.apache.xml.internal.security.exceptions.Base64DecodingException;
 import com.sun.org.apache.xml.internal.security.utils.Base64;
-import al.aesencryptor.enums.Encoding;
+import model.enums.Encoding;
 
 import java.io.UnsupportedEncodingException;
 

@@ -1,10 +1,10 @@
 package controller;
 
-import al.aesencryptor.CryptographerHandler;
-import al.aesencryptor.enums.Encoding;
-import al.aesencryptor.enums.FileStatus;
-import al.aesencryptor.Cryptographer;
-import al.aesencryptor.enums.CryptStatus;
+import model.CryptographerHandler;
+import model.enums.Encoding;
+import model.enums.FileStatus;
+import model.Cryptographer;
+import model.enums.CryptStatus;
 import view.AppFrame;
 
 import java.io.*;

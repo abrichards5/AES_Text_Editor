@@ -1,6 +1,6 @@
 package controller;
 
-import al.aesencryptor.enums.Encoding;
+import model.enums.Encoding;
 import view.data.FindParams;
 import controller.exception.InputCancelledException;
 import view.AppFrame;

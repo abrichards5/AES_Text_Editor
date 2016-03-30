@@ -1,6 +1,6 @@
-package al.aesencryptor;
+package model;
 
-import al.aesencryptor.enums.FileStatus;
+import model.enums.FileStatus;
 import org.junit.Test;
 
 public class CryptographerHandlerTest {

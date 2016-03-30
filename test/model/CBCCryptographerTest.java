@@ -1,10 +1,7 @@
-package al.aesencryptor;
+package model;
 
 import com.sun.org.apache.xml.internal.security.exceptions.Base64DecodingException;
 import com.sun.org.apache.xml.internal.security.utils.Base64;
-import al.aesencryptor.CBCCryptographer;
-import al.aesencryptor.Cryptographer;
-import junit.framework.TestCase;
 import org.junit.Test;
 
 import javax.crypto.BadPaddingException;

@@ -1,4 +1,4 @@
-package al.aesencryptor;
+package model;
 
 import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;

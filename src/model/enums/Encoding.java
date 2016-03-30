@@ -1,4 +1,4 @@
-package al.aesencryptor.enums;
+package model.enums;
 
 /**
  * Created by alutman on 11-Sep-14.

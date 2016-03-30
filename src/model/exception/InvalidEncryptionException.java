@@ -1,4 +1,4 @@
-package al.aesencryptor.exception;
+package model.exception;
 
 /**
  * Created by alutman on 11-Sep-14.

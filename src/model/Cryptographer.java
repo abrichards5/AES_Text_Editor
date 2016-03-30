@@ -1,4 +1,4 @@
-package al.aesencryptor;
+package model;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;

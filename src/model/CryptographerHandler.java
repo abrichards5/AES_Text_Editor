@@ -1,9 +1,9 @@
-package al.aesencryptor;
+package model;
 
-import al.aesencryptor.enums.Encoding;
-import al.aesencryptor.enums.FileStatus;
-import al.aesencryptor.exception.InvalidEncryptionException;
-import al.aesencryptor.enums.CryptStatus;
+import model.enums.Encoding;
+import model.enums.FileStatus;
+import model.exception.InvalidEncryptionException;
+import model.enums.CryptStatus;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
