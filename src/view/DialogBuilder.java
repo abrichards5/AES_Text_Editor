@@ -68,6 +68,10 @@ public class DialogBuilder {
             //Cannot differentiate between null input and cancel downstream using only the return value
             throw new InputCancelledException();
         }
+        else if (selected == JOptionPane.CLOSED_OPTION) {
+            //Handle pressing ESC
+            throw new InputCancelledException();
+        }
         return null;
     }
 
