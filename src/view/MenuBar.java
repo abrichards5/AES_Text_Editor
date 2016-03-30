@@ -14,6 +14,7 @@ import java.awt.event.KeyEvent;
 class MenuBar extends JMenuBar {
     private final JMenu file = new JMenu("File");
     private final JMenuItem open = new JMenuItem("Open");
+    private final JMenuItem reopen = new JMenuItem("Re-open");
     private final JMenuItem newFile = new JMenuItem("New");
     private final JMenuItem save = new JMenuItem("Save");
     private final JMenuItem saveAs = new JMenuItem("Save As");
@@ -49,6 +50,7 @@ class MenuBar extends JMenuBar {
     public MenuBar() {
         file.add(newFile);
         file.add(open);
+        file.add(reopen);
         file.add(save);
         file.add(saveAs);
         file.add(exit);
@@ -94,6 +96,11 @@ class MenuBar extends JMenuBar {
         open.setActionCommand("open");
         open.addActionListener(al);
         open.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_DOWN_MASK));
+
+        reopen.setMnemonic('r');
+        reopen.setActionCommand("reopen");
+        reopen.addActionListener(al);
+        reopen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.CTRL_DOWN_MASK));
 
         save.setMnemonic('s');
         save.setActionCommand("save");

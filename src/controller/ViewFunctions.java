@@ -1,6 +1,7 @@
 package controller;
 
 import model.enums.Encoding;
+import model.enums.FileStatus;
 import view.data.FindParams;
 import controller.exception.InputCancelledException;
 import view.AppFrame;
@@ -152,6 +153,18 @@ public class ViewFunctions {
             model.newFile();
             setModified(false);
         }
+    }
+    public void reopen() {
+        if(model.hasFile()) {
+            if(checkSaved()) {
+                model.reopen();
+                setModified(false);
+            }
+        }
+        else {
+            view.statusBar().setStatus("NO FILE TO REOPEN");
+        }
+
     }
     public void open() {
         if(checkSaved()) {

@@ -58,6 +58,9 @@ public class UserActionListener implements ActionListener, DocumentListener, Win
             case "open":
                 model.open();
                 break;
+            case "reopen":
+                model.reopen();
+                break;
             case "save":
                 model.save();
                 break;

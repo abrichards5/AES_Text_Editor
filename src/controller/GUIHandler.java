@@ -19,6 +19,8 @@ public class GUIHandler extends CryptographerHandler {
 
     private final AppFrame view;
 
+    private File currentFile = null;
+
     public GUIHandler(AppFrame af, Cryptographer aes) {
         super(aes);
         view = af;
@@ -37,6 +39,21 @@ public class GUIHandler extends CryptographerHandler {
         view.getTextArea().setText("");
         view.statusBar().setFilename("");
         view.setTitleFilename("");
+        currentFile = null;
+    }
+
+    public boolean hasFile() {
+        return currentFile != null;
+    }
+
+    public FileStatus reopen() {
+        if(hasFile()) {
+            return openFile(currentFile);
+        }
+        else {
+            return FileStatus.ERROR;
+        }
+
     }
 
     public FileStatus openFile(File file) {
@@ -55,10 +72,12 @@ public class GUIHandler extends CryptographerHandler {
         if(fc.equals(FileStatus.TEXT_FILE)) {
             view.setTextMode();
             status = "OPEN SUCCESSFUL";
+            currentFile = file;
         }
         else if(fc.equals(FileStatus.BINARY_FILE)) {
             view.setBinaryMode();
             status = "BINARY OPEN SUCCESSFUL";
+            currentFile = file;
         }
         else if(fc.equals(FileStatus.ERROR)) {
             status = "ERROR IN OPENING";
@@ -72,18 +91,19 @@ public class GUIHandler extends CryptographerHandler {
         return fc;
     }
 
-    public void saveFile(File filename) {
+    public void saveFile(File file) {
         updateModel();
         try {
-            super.saveFile(filename);
+            super.saveFile(file);
         } catch(IOException ioe) {
             view.statusBar().setStatus("SAVE FAILED");
             return;
         }
 
-        view.statusBar().setFilename(filename.getAbsolutePath());
-        view.setTitleFilename(filename.getName());
+        view.statusBar().setFilename(file.getAbsolutePath());
+        view.setTitleFilename(file.getName());
         view.statusBar().setStatus("SAVE SUCCESSFUL");
+        currentFile = file;
     }
 
     private void updateView() {
