@@ -73,6 +73,9 @@ public class UserActionListener implements ActionListener, DocumentListener, Win
             case "redo":
                 model.redo();
                 break;
+            case "clearhistory":
+                model.clearHistory();
+                break;
             case "find":
                 model.find();
                 break;

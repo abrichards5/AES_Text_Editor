@@ -72,6 +72,10 @@ public class TextArea extends JTextArea {
         }
     }
 
+    public void clearHistory() {
+        undoMan.discardAllEdits();
+    }
+
     public boolean undo() {
         if (undoMan.canUndo()) {
             undoMan.undo();

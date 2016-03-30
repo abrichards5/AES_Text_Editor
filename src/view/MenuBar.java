@@ -22,6 +22,7 @@ class MenuBar extends JMenuBar {
     private final JMenu edit = new JMenu("Edit");
     private final JMenuItem undo = new JMenuItem("Undo");
     private final JMenuItem redo = new JMenuItem("Redo");
+    private final JMenuItem clearHistory = new JMenuItem("Clear History");
     private final JMenuItem find = new JMenuItem("Find");
     private final JMenuItem findNext = new JMenuItem("Find Next");
 
@@ -55,6 +56,7 @@ class MenuBar extends JMenuBar {
 
         edit.add(undo);
         edit.add(redo);
+        edit.add(clearHistory);
         edit.add(find);
         edit.add(findNext);
         this.add(edit);
@@ -120,6 +122,10 @@ class MenuBar extends JMenuBar {
         redo.setActionCommand("redo");
         redo.addActionListener(al);
         redo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Y, InputEvent.CTRL_DOWN_MASK));
+
+        clearHistory.setMnemonic('c');
+        clearHistory.setActionCommand("clearhistory");
+        clearHistory.addActionListener(al);
 
         find.setMnemonic('f');
         find.setActionCommand("find");

@@ -71,6 +71,10 @@ public class ViewFunctions {
         view.getTextArea().redo();
     }
 
+    public void clearHistory() {
+        view.getTextArea().clearHistory();
+    }
+
     // Checks to see if the text area has been modified recently and if it has, ask to save the file.
     // The return type is used to see if the user wants to continue on (close the current file)
     boolean checkSaved() {
