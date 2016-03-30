@@ -160,6 +160,7 @@ public class ViewFunctions {
     public void openDirect(File f) {
         if(checkSaved()) {
             model.openFile(f);
+            view.dialogs().setFileDialogDirectory(f);
             isModified = false;
         }
     }

@@ -126,6 +126,11 @@ public class DialogBuilder {
         return null;
     }
 
+
+    public void setFileDialogDirectory(File f) {
+        fileChooser.setCurrentDirectory(f);
+    }
+
     public File openFileDialog() {
         int status = fileChooser.showOpenDialog(af);
         File selected = fileChooser.getSelectedFile();
