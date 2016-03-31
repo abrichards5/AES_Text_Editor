@@ -39,6 +39,9 @@ public class TextArea extends JTextArea {
     public static final int NULL_WORD = -2;
     public static final int INVALID_REGEX = -3;
 
+    private static final int HORIZONTAL_MARGIN_SIZE = 3;
+    private static final int VERTICAL_MARGIN_SIZE = 1;
+
     private ArrayList<Match> matches = new ArrayList<>();
 
     public TextArea() {
@@ -51,6 +54,7 @@ public class TextArea extends JTextArea {
             }
         });
         this.setFont(DEFAULT_FONT);
+        this.setMargin(new Insets(VERTICAL_MARGIN_SIZE,HORIZONTAL_MARGIN_SIZE,VERTICAL_MARGIN_SIZE,HORIZONTAL_MARGIN_SIZE));
         this.setTabSize(DEFAULT_TAB_SIZE);
     }
     
