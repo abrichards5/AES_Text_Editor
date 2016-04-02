@@ -1,12 +1,13 @@
-package view;
+package view.dialogs;
 
+import view.AppFrame;
+import view.RequestFocusListener;
 import view.data.FindParams;
 import controller.exception.InputCancelledException;
-import say.swing.JFontChooser;
-
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+
 
 /**
  * Created by alutman on 17/03/14.

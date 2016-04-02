@@ -27,7 +27,7 @@ public class TextArea extends JTextArea {
     private final UndoManager undoMan = new UndoManager();
     private final Document thisDoc;
 
-    public static final Font DEFAULT_FONT = new Font(Font.MONOSPACED, Font.PLAIN, 12);
+    public static final Font DEFAULT_FONT = new Font(Font.MONOSPACED, Font.PLAIN, DPIController.scaleToDPI(12));
     public static final int[] DEFAULT_FONT_SIZES =
             {
                     8, 9, 10, 11, 12, 14, 16, 18, 20,

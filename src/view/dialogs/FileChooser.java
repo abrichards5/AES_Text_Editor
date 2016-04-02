@@ -1,4 +1,5 @@
-package view;
+package view.dialogs;
+
 
 import javax.swing.*;
 import java.io.File;

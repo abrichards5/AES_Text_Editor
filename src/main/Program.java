@@ -12,6 +12,7 @@ import view.AppFrame;
 import model.enums.CryptStatus;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.*;
+import view.DPIController;
 
 import java.io.*;
 import java.util.Scanner;
@@ -193,6 +194,7 @@ public class Program {
     }
 
     private static void startGUI() {
+        DPIController.scaleFontsToDPI();
         Cryptographer crypt = new CBCCryptographer();
         AppFrame app = new AppFrame();
         GUIHandler mc = new GUIHandler(app, crypt);

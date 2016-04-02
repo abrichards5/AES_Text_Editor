@@ -1,6 +1,7 @@
 package view;
 
 import main.Program;
+import view.dialogs.DialogBuilder;
 
 import javax.swing.*;
 import javax.swing.event.DocumentListener;
@@ -9,6 +10,8 @@ import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetListener;
 import java.awt.event.*;
 import java.util.TooManyListenersException;
+
+import static view.DPIController.scaleToDPI;
 
 /**
  * Created by alutman on 14/03/14.
@@ -27,10 +30,10 @@ public class AppFrame extends JFrame {
 
     public ImageIcon ICON = null;
 
-
     public AppFrame() {
-        this.setSize(500, 500);
-        this.setMinimumSize(new Dimension(250,200));
+
+        this.setSize(scaleToDPI(500), scaleToDPI(500));
+        this.setMinimumSize(new Dimension(scaleToDPI(250), scaleToDPI(200)));
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setTextWrap(false);
@@ -44,7 +47,7 @@ public class AppFrame extends JFrame {
         this.setVisible(true);
     }
 
-    String filename = "untitled";
+    private String filename = "untitled";
 
     public void setTitleFilename(String filename) {
         if(filename == null || filename.length() <= 0) {
