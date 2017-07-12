@@ -1,7 +1,7 @@
 package model;
 
 import model.enums.FileStatus;
-import model.exception.InvalidEncryptionException;
+import model.exception.InvalidEncodingException;
 import com.sun.org.apache.xerces.internal.impl.dv.util.HexBin;
 import com.sun.org.apache.xml.internal.security.exceptions.Base64DecodingException;
 import com.sun.org.apache.xml.internal.security.utils.Base64;
@@ -52,19 +52,19 @@ public class ByteData {
             //Don't bother encoding
         }
     }
-    public void decode() throws InvalidEncryptionException {
+    public void decode() throws InvalidEncodingException {
         if(encodingMode.equals(Encoding.BASE64)) {
             try {
                 set(Base64.decode(text()));
             } catch(Base64DecodingException b64de) {
-                throw new InvalidEncryptionException();
+                throw new InvalidEncodingException();
             }
 
         }
         else if (encodingMode.equals(Encoding.HEX)) {
             byte[] b = HexBin.decode(text());
             if (b == null) {
-                throw new InvalidEncryptionException();
+                throw new InvalidEncodingException();
             }
             set(HexBin.decode(text()));
         }

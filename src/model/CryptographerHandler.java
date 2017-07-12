@@ -2,11 +2,11 @@ package model;
 
 import model.enums.Encoding;
 import model.enums.FileStatus;
-import model.exception.InvalidEncryptionException;
+import model.exception.DecryptFailedException;
+import model.exception.InvalidDataException;
+import model.exception.InvalidEncodingException;
 import model.enums.CryptStatus;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
 import java.io.*;
 
 /**
@@ -92,12 +92,13 @@ public class CryptographerHandler {
             data.set(aes.decrypt(key.getBytes(), data.bytes()));
             data.detectMode();
         }
-        catch (InvalidEncryptionException iee) {
-            //InvalidEncryptionException is a result of trying to decrypt something that isn't encrypted
-            return CryptStatus.INVALID_FILE;
+        catch (InvalidEncodingException iee) {
+            return CryptStatus.INVALID_ENCODING;
         }
-        catch (BadPaddingException | IllegalBlockSizeException e) {
-            //BadPaddingException is a result of trying to decrypt with a incorrect key
+        catch (InvalidDataException e) {
+            return CryptStatus.INVALID_DATA;
+        }
+        catch (DecryptFailedException e) {
             data.encode();
             return CryptStatus.INVALID_KEY_ENC;
         }

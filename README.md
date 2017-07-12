@@ -17,8 +17,15 @@ Details
   * Raw text is handled in UTF-8 format
   * Text files when encrypted are by default encoded in base64
   * Binary files when encrypted by default have no encoding
-  * Encryption uses AES, CBC with PKCS5Padding, salted with a hard-coded byte array
-  * Keys are hashed with PBKDF2WithHmacSHA1
+
+### Encryption
+  * **Cipher**: `AES-128`
+  * **Block Mode**: `CBC`
+  * **Padding**: `PKCS5Padding`
+  * **HMAC**: `SHA256`
+  * **Key Derivation**: `PBKDF2WithHmacSHA1`
+  * **Salting**: `SHA1PRNG`
+
   
 Sources
 -------
